@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espai Cos</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body>
+    <!-- Menu Button -->
+    <button class="menu-toggle" aria-label="Toggle menu">
+        <div class="menu-icon"></div>
+    </button>
+
+    <!-- Fullscreen Overlay Menu -->
+    <div class="overlay-menu">
+        <header class="menu-header">
+            <nav class="menu-navigation">
+                <a href="#home">Espai Cos</a>
+                <a href="#instructors-section">Dirección</a>
+                <a href="#classes-section">Clases</a>
+                <a href="#schedule-section">Horarios</a>
+                <a href="#space-section">Espacio</a>
+                <a href="#pricing-section">Precios</a>
+                <a href="#form-section">Apúntate</a>
+            </nav>
+            <div class="language-selector">
+                <button>Català</button>
+                <button>Español</button>
+                <button>English</button>
+            </div>
+            <button class="close-menu" aria-label="Close menu">
+                <div class="close-icon"></div>
+            </button>
+        </header>
+        <img class="menu-logo" src="assets/icons/EspaiCos-logo.svg" alt="Espai Cos logo">
+        <footer class="footer">
+            <div class="footer-section">
+                <h3>© 2025, Espai Cos</h3>
+            </div>
+            <div class="footer-section">
+                <ul>
+                    <li><a href="#home">Aviso legal</a></li>
+                    <li><a href="#classes">Política de Privacidad</a></li>
+                    <li><a href="#schedule">Política de cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Dirección</h3>
+                <h3>C/ Mar Mediterrànea 10, ESC 1 1r B,
+                   <br> 07184 Calvià, Mallorca</h3>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <a href="mailto:hello@espaicos.com">hello@espaicos.com</a>
+                <a href="tel:+34638767380">+34 638 767 380</a>
+            </div>
+            <div class="footer-section">
+                <h3>Suscríbete a la newsletter</h3>
+                <form class="newsletter-form" novalidate>
+                    <input type="email" id="newsletter-email" name="email" placeholder="Escribe tu e-mail" required>
+                    <span class="newsletter-error" style="display:none; color: var(--brown-color); font-size: 0.75rem;"></span>
+                    <span class="newsletter-success" style="display:none; color: var(--brown-color); font-size: 0.75rem;"></span>
+                    <button type="submit" class="btn">Suscribirte</button>
+                </form>
+            </div>
+            <div class="footer-section-mobile">
+                <h3>© 2025, Espai Cos</h3>
+                <div class="language-selector">
+                    <button>Català</button>
+                    <button>Español</button>
+                    <button>English</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero" data-bgcolor="var(--beige-color)">
+        <div class="container">
+            <div class="hero-content">
+                <div class="language-selector">
+                    <button>Català</button>
+                    <button>Español</button>
+                    <button>English</button>
+                </div>
+                <img class="logo is-animated" src="assets/images/animation_transparent-once.webp" alt="Espai Cos logo">
+                <h1>Espai Cos es un lugar donde poder celebrar, redescubrir y reinventar el cuerpo a través de la formación en danza y la creación artística.</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about-section" class="about-section bottom-margin" data-bgcolor="var(--beige-color)">
+        <div class="container-is-text">
+            <p>Un punto de encuentro en Calvià para todas aquellas personas que deseen explorar el movimiento, expresarse artísticamente y disfrutar de los beneficios de la danza, independientemente de su cuerpo y experiencia.</p>
+        </div>
+        <div class="container-is-image">
+                <img class="lg" src="assets/images/PhilStern_RitaMorenoDuringaRehearsalforWestSideStory1961-gigapixel-high fidelity v2-2x.jpg" alt="">
+                <img class="sm" src="assets/images/original_bbcbb094cd9a9d323d06d1f485386d7c.jpg" alt="">
+        </div>
+        <div class="container-is-text">
+            <p>En Espai Cos entendemos la enseñanza-aprendizaje como un proceso continuo y en constante evolución. Por eso ponemos en valor la investigación, el hacer, deshacer y rehacer y reconocemos el error como una oportunidad para crecer y mejorar.</p>
+    
+            <p>Creemos en la importancia de generar espacios performativos donde compartir los procesos y trabajos, tanto de las alumnas como de profesionales de la danza que se encuentren en fases de creación. A través de estas experiencias buscamos tender puentes entre profesionales y no profesionales para favorecer la colaboración, el intercambio y el crecimiento dentro de la comunidad artística en Mallorca.</p>
+        </div>
+    </section>
+
+    <!-- Instructors Section -->
+    <section id="instructors-section" class="instructors-section bottom-margin" data-bgcolor="var(--blue-color)">
+        <div class="instructors-title-wrapper">
+            <h1 class="is-title">Dirección pedagógica
+                y artística </h1>
+            <img src="assets/images/488495116_17921817771062065_4787917094694157874_n.jpg" alt="Cate Barceló">
+        </div>
+        <div class="instructors-content-wrapper">
+            <h1>Cate Barceló</h1>
+            <p>Bailarina, pedagoga de la danza y creadora nacida en la isla de Mallorca. Estudia el grado profesional de danza clásica en el Conservatorio Profesional de Música y Danza de Palma. Continúa sus estudios en el Grado Superior de Pedagogía de la Danza en el Institut del Teatre de Barcelona y en el programa Modern Dance Theatre en la Academy of Theatre and Dance de Ámsterdam. Realiza sus prácticas pedagógicas en el proyecto TOT DANSA del Mercat de les Flors junto al coreógrafo João Lima y asiste pedagógicamente en los proyectos Five Days to Dance y Family Concert en el Concertgebouworkest de Ámsterdam con DE LooPERS.</p>
+            <p>Como pedagoga de la danza, hace más de diez años que desarrolla su práctica docente en reconocidas escuelas de danza tanto en Barcelona como en Mallorca, enseñando danza contemporánea y danza clásica a alumnas de diferentes contextos, edades y niveles. Desde hace un año, colabora con la Asociación de Profesionales de la Danza de las Islas Baleares (APDIB), ofreciendo entrenamientos para profesionales y talleres de danza comunitarios. Como bailarina, ha trabajado en diferentes proyectos junto a artistas visuales, plásticos y escultores. A principios de 2024, crea, junto a Zoe Gyssler y Valentina Russo, el colectivo de danza teatro Catzoval, donde actualmente está trabajando en la creación de la pieza In-corpore.</p>
+
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section bottom-margin" data-bgcolor="var(--blue-color)">
+        <img src="assets/images/PhilStern_RitaMorenoDuringaRehearsalforWestSideStory1961-gigapixel-high fidelity v2-2x.jpg" alt="">
+        <img src="assets/images/original_bbcbb094cd9a9d323d06d1f485386d7c.jpg" alt="">
+    </section>
+
+
+    <!-- Classes Section -->
+    <section id="classes-section" class="classes-section bottom-margin" data-bgcolor="var(--green-color)">
+        <div class="is-title">
+            <h1>Clases</h1>
+        </div>
+        <div class="classes-grid">
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Danza Creativa</h1>
+                    <h2>7-10 años</h2>
+                </div>
+                <p class="class-description">
+                    En las clases de Danza Creativa se fomenta la expresión corporal, la imaginación y el trabajo en grupo a través del movimiento. A partir del juego, la improvisación y dinámicas grupales los niños y niñas desarrollarán la coordinación, el ritmo, la conciencia espacial y la confianza en sí mismos y en los otros. Se promueve un ambiente lúdico y seguro donde cada niño podrá explorar, crear y disfrutar de su propio movimiento.
+                </p>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Contemporáneo 
+                        Adolescentes </h1>
+                    <h2>+11 años</h2>
+                </div>
+                <p class="class-description">
+                    La clase de Danza Contemporánea para Adolescentes ofrece un espacio dinámico para explorar el movimiento desde la técnica, la creación y la expresión personal. A través de ejercicios técnicos, trabajo en el suelo, secuencias coreográficas y propuestas de improvisación, los alumnos desarrollarán la conciencia corporal, la sensibilidad artística y la escucha propia y grupal. La clase estimula el trabajo colaborativo, el desarrollo de un lenguaje corporal propio, la reflexión y la conexión individual.
+                </p>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Danza Clásica 
+                        para niños y niñas </h1>
+                    <h2>8-12 años</h2>
+                </div>
+                <p class="class-description">
+                    Las clase de Danza Clásica para niños y niñas de 8 a 12 años introduce y asienta las bases de la técnica del ballet de forma progresiva, respetando el desarrollo físico, cognitivo y emocional de los alumnos. A través de ejercicios en el suelo, la barra, el centro y pequeñas combinaciones, se trabajará la colocación, la coordinación, la musicalidad y la disciplina, sin dejar de lado el disfrute y la expresión artística. El ambiente es amable y familiar, fomentando la constancia, el trabajo en equipo y el amor por la danza clásica desde una base sólida y motivadora.
+                </p>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Contemporáneo 
+                        Adultos I</h1>
+                </div>
+                <p class="class-description">
+                    La clase de Danza Contemporánea para Adultos I está pensada para personas sin experiencia previa. Facilitaremos una introducción amable y accesible al mundo del movimiento y de la danza. A través de ejercicios simples e improvisaciones pautadas, exploramos la conciencia corporal, el ritmo y la expresión personal. El enfoque es creativo, con propuestas que invitan a moverse con libertad, soltar tensiones y redescubrir el cuerpo como un medio de comunicación y bienestar.
+                </p>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Contemporáneo 
+                        Adultos II</h1>
+                </div>
+                <p class="class-description">
+                    La clase de Danza Contemporánea para Adultos II está dirigida a personas con algo de experiencia en danza o movimiento: quienes hayan bailado en el pasado, practiquen yoga, teatro u otras disciplinas corporales. En esta clase nos enfocamos en la técnica y la creación. A través del trabajo en el suelo, la improvisación y las secuencias coreográficas, buscamos afinar la conciencia corporal y ampliar tanto el rango como las calidades del movimiento. Es un espacio para seguir desarrollando habilidades, compartir en grupo y encontrar libertad dentro de la estructura, todo en un ambiente creativo, estimulante y cercano.
+                </p>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Danza Clásica 
+                        Adultos</h1>
+                </div>
+                <p class="class-description">
+                    La clase de Danza Clásica para Adultos está diseñada para quienes desean acercarse al ballet por primera vez o retomar la práctica desde una base accesible y amable. Se trabaja la técnica — colocación, alineación, coordinación, musicalidad y fuerza— a través de ejercicios simples en la barra, en el centro y en pequeñas combinaciones. El enfoque es progresivo, respetando el cuerpo y el ritmo de cada persona, en un ambiente sin exigencias ni encorsetamientos donde el disfrute del movimiento, la armonía y el bienestar físico y emocional serán lo más importante.
+                </p>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>LAB Creativo</h1>
+                </div>
+                <p class="class-description">
+                    El Laboratorio creativo (LAB creativo) es un espacio abierto para personas con o sin experiencia en el movimiento, donde el objetivo principal es habitar el cuerpo desde lo artístico y lo expresivo, explorando e investigando sus posibilidades físicas. A través de la improvisación guiada, investigación del gesto y la creación, se invita a descubrir un lenguaje corporal propio, conectando con otros cuerpos para así desarrollar la creatividad en el movimiento. Es un espacio seguro y libre de juicio, donde el cuerpo es protagonista y el proceso es la base del aprendizaje. Esta clase es la única que se realiza una vez por semana y se podrá tomar de forma regular o suelta.
+                </p>
+            </div>
+        </div>
+    </section>
+
+     <!-- Schedule Section -->
+     <section id="schedule-section" class="schedule-section bottom-margin" data-bgcolor="var(--orange-color)">
+        <div class="is-title">
+            <h1>Horario<br>
+                Curso 2025 /26</h1>
+        </div>
+        <div class="classes-grid">
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Lunes y Miércoles</h1>
+                </div>
+                <div class="schedule-day-wrapper">
+                    <div class="schedule-class">
+                        <h1>16:30 - 17:30 <br>
+                            Danza Creativa</h1>
+                        <h2>7-10 años</h2>
+                    </div>
+                    <div class="schedule-class top-padding">
+                        <h1>17:45 - 18:45<br>
+                            Contemporáneo Adolescentes</h1>
+                        <h2>+11 años</h2>
+                    </div>
+                    <div class="schedule-class top-padding">
+                        <h1>19:00 - 20:15<br>
+                            Contemporáneo Adultos I</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Martes y Jueves</h1>
+                </div>
+                <div class="schedule-day-wrapper">
+                    <div class="schedule-class">
+                        <h1>17:00 - 18:00<br>
+                            Danza Clásica</h1>
+                        <h2>8-12 años</h2>
+                    </div>
+                    <div class="schedule-class top-padding">
+                        <h1>18:15 - 19:15<br>
+                            Danza Clásica Adultos</h1>
+                    </div>
+                    <div class="schedule-class top-padding">
+                        <h1>19:30 - 20:45<br>
+                            Contemporáneo Adultos II</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="class-wrapper">
+                <div class="class-title">
+                    <h1>Viernes</h1>
+                </div>
+                <div class="schedule-day-wrapper">
+                    <div class="schedule-class">
+                        <h1>18:00 - 19:30<br>
+                            LAB Creativo</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Space Section -->
+    <section id="space-section" class="space-section bottom-margin" data-bgcolor="var(--white)">
+        <img class="container-is-image" src="assets/images/1-1860463773948541d30da4ff92a8be6554282b1e-3000x2250.webp" alt="Espai Cos">
+        <div class="space-section-grid">
+            <h1 class="is-title">Espacio</h1>
+            <h1>Espai Cos es ideal para ensayar danza, teatro, … <br> Organizar castings, rodajes, sesiones fotográficas, pequeñas presentaciones, muestras de procesos en creación… </h1>
+            <div class="space-details-wrapper">
+                <h3>Características</h3>
+                <div class="items-list">
+                    <p>80 m2 Aire acondicionado (frío, calor y renovación de aire)</p>
+                    <p>Red Wifi</p>
+                    <p>Tarima amortiguadora y linóleo Harlequin</p>
+                    <p>2 barras de ballet de 3 m. de Dinamica Ballet</p>
+                    <p>Equipo de sonido de calidad</p>
+                    <p>Focos puntuales escénicos </p>
+                    <p>Grada para público</p>
+                    <p>Cortina que cubre espejos y ventanas</p>
+                    <p>Fuente de agua potable</p>
+                    <p>Luz natural</p>
+                </div>
+
+            </div>
+            <img src="assets/images/2-estudio-DIIR-Tonton-Estado-Final-David-Zarzoso-05.webp" alt="Espai Cos">
+            <img src="assets/images/3-estudio-DIIR-Neutrale-BCN-Planta.png" alt="Espai Cos">
+            <div class="space-img-wrapper" >
+                <img src="assets/images/4-estudio-DIIR-Tonton-Estado-Final-David-Zarzoso-08.webp" alt="">
+                <img src="assets/images/5-estudio-DIIR-Tonton-Estado-Final-David-Zarzoso-01.webp" alt="">
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing-section" class="pricing-section bottom-margin" data-bgcolor="var(--purple-color)">
+        <h1 class="is-title">Precios</h1>
+        <div class="pricing-grid">
+            <div class="pricing-items-list">
+                <div class="price-list-element">
+                    <p>2h/semana</p>
+                    <p>65€/mes</p>
+                </div>
+                <div class="price-list-element">
+                    <p>2h y 30min/semana</p>
+                    <p>75€/mes</p>
+                </div>
+                <div class="price-list-element">
+                    <p>3h y 30min/semana</p>
+                    <p>90€/mes</p>
+                </div>
+                <div class="price-list-element">
+                    <p>4h/semana</p>
+                    <p>100€/mes</p>
+                </div>
+                <div class="price-list-element">
+                    <p>4h y 30min/semana</p>
+                    <p>110€/mes</p>
+                </div>
+                <div class="price-list-element">
+                    <p>6h/semana</p>
+                    <p>120€/mes</p>
+                </div>
+                <div class="price-list-element">
+                    <p>LAB Creativo</p>
+                    <p>20€/clase  50€/mes</p>
+                </div>
+            </div>
+            <h3>No hay matrícula <br>
+                La clase de prueba son 15€, que quedan descontados del mes una vez inscritos al estudio</h3>
+        </div>
+    </section>
+
+
+    <!-- Form Section -->
+    <section id="form-section" class="form-section  bottom-margin" data-bgcolor="var(--beige-color)">
+        <h1 class="is-title">Apúntate!</h1>
+        <form id="contact-form" class="contact-form">
+            <div class="form-group is-left">
+                <label for="name">Nombre</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group is-right">
+                <label for="surname">Apellidos</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group is-left">
+                <label for="birthday">Fecha de nacimiento</label>
+                <input type="date" id="birthday" name="birthday" required>
+            </div>
+            <div class="form-group is-right">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group is-left">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone">
+            </div>
+            <div class="form-group is-left">
+                <label>En qué clase estás interesada?</label>
+                <div class="custom-radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="schedule1" name="schedule" value="morning">
+                        <label for="schedule1">Danza Creativa</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedule2" name="schedule" value="afternoon">
+                        <label for="schedule2">Danza Clásica</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedule3" name="schedule" value="evening">
+                        <label for="schedule3">Contemporáneo Adolescentes</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedule3" name="schedule" value="evening">
+                        <label for="schedule3">Contemporáneo Adultos I</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedule3" name="schedule" value="evening">
+                        <label for="schedule3">Contemporáneo Adultos II</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedule3" name="schedule" value="evening">
+                        <label for="schedule3">Danza Clásica Adultos</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="schedule3" name="schedule" value="evening">
+                        <label for="schedule3">LAB Creativo</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group is-right">
+                <label for="experience">Experiencia con el movimiento <br> (danza, teatro, yoga, deportes, etc)</label>
+                <textarea id="experience" name="experience" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+            </div>
+            <div class="is-left">
+                <label for="message">Otras consultas</label>
+                <textarea id="message" name="message" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary is-right">Enviar</button>
+        </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <img class="footer-logo" src="assets/icons/EspaiCos-logo.svg" alt="Espai Cos">
+            <h3>© 2025, Espai Cos</h3>
+        </div>
+        <div class="footer-section">
+            <ul>
+                <li><a href="#home">Aviso legal</a></li>
+                <li><a href="#classes">Política de Privacidad</a></li>
+                <li><a href="#schedule">Política de cookies</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Dirección</h3>
+            <h3>C/ Mar Mediterrànea 10, ESC 1 1r B,
+               <br> 07184 Calvià, Mallorca</h3>
+        </div>
+        <div class="footer-section">
+            <h3>Contacto</h3>
+            <a href="mailto:hello@espaicos.com">hello@espaicos.com</a>
+            <a href="tel:+34638767380">+34 638 767 380</a>
+        </div>
+        <div class="footer-section">
+            <h3>Suscríbete a la newsletter</h3>
+            <form class="newsletter-form" novalidate>
+                <input type="email" id="newsletter-email" name="email" placeholder="Escribe tu e-mail" required>
+                <span class="newsletter-error" style="display:none; color: var(--brown-color); font-size: 0.75rem;"></span>
+                <span class="newsletter-success" style="display:none; color: var(--brown-color); font-size: 0.75rem;"></span>
+                <button type="submit" class="btn">Suscribirte</button>
+            </form>
+        </div>
+        <div class="footer-section-mobile">
+            <h3>© 2025, Espai Cos</h3>
+            <div class="language-selector">
+                <button>Català</button>
+                <button>Español</button>
+                <button>English</button>
+            </div>
+        </div>
+    </footer>
+
+    <a href="#home" class="back-to-top">Volver al inicio</a>
+
+    <!-- Scripts -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/form.js"></script>
+    <script src="./js/stripe.js"></script>
+</body>
+</html> 

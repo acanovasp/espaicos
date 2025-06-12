@@ -1,0 +1,35 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Reset list styles */
+ul, ol {
+    list-style: none;
+}
+
+/* Reset link styles */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Reset button styles */
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* Reset form elements */
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+} 
