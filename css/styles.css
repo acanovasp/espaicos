@@ -160,6 +160,8 @@ li {
     font-size: 0.75rem;
     line-height: 130%;
     color: var(--brown-color);
+    padding: 0;
+    transition: opacity 0.3s ease;
 }
 
 .language-selector button:not(:last-child)::after {
@@ -167,6 +169,11 @@ li {
     margin-left: 5px;
     margin-right: 5px;
     color: var(--brown-color);
+}
+
+.language-selector button.active {
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .logo {
@@ -180,9 +187,10 @@ li {
 }
 
 .logo, .is-animated {
+    -webkit-mix-blend-mode: multiply;
     mix-blend-mode: multiply;
-    animation: playOnce 5s forwards; /* Adjust total duration based on your animation length */
-    animation-delay: 2s; /* 2-second delay before starting */
+    animation: playOnce 5s forwards;
+    animation-delay: 2s;
 }
 
 .hero-content h1 {
@@ -407,6 +415,10 @@ li {
 .space-section-grid img:nth-child(5) {
     grid-column: 6 / span 2;  
     grid-row: 3; 
+    -webkit-mix-blend-mode: multiply;
+    mix-blend-mode: multiply;
+    /* Fallback for Safari */
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .space-img-wrapper {
@@ -658,15 +670,28 @@ input, textarea {
     width: 100%;
 }
 
-.newsletter-form input[type="email"] {
-    border: none;
+.newsletter-form input[type="text"] {
+    border: 1.5px solid var(--brown-color);
+    height: var(--spacing-sm);
+    padding: 0 6px 0 6px;
     outline: none;
     background: transparent;
     box-shadow: none;
     color: var(--brown-color);
-    padding: 1px 0 5px 0;
     margin: 0;
-    height: 100%;
+}
+
+.suscribe-text {
+    margin-bottom: 0.2rem;
+}
+
+.newsletter-form .btn {
+    margin-top: 0.4rem;
+}
+
+.newsletter-form input[type="text"]::placeholder {
+    color: var(--brown-color);
+    opacity: 1;
 }
 
 .newsletter-form * {
@@ -865,3 +890,4 @@ input, textarea {
 .overlay-menu .footer-section {
     margin-bottom: 0;
 }
+

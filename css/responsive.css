@@ -365,4 +365,8 @@
         transform: translate(-50%, -50%);
     }
 
+    .back-to-top {
+        display: none;
+    }
+
 }

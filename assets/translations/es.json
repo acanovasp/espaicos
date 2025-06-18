@@ -1,0 +1,132 @@
+{
+    "home": {
+        "title": "Espai Cos es un lugar donde poder celebrar, redescubrir y reinventar el cuerpo a través de la formación en danza y la creación artística."
+    },
+    "about": {
+        "p1": "Un punto de encuentro en Calvià para todas aquellas personas que deseen explorar el movimiento, expresarse artísticamente y disfrutar de los beneficios de la danza, independientemente de su cuerpo y experiencia.",
+        "p2": "En Espai Cos entendemos la enseñanza-aprendizaje como un proceso continuo y en constante evolución. Por eso ponemos en valor la investigación, el hacer, deshacer y rehacer y reconocemos el error como una oportunidad para crecer y mejorar.",
+        "p3": "Creemos en la importancia de generar espacios performativos donde compartir los procesos y trabajos, tanto de las alumnas como de profesionales de la danza que se encuentren en fases de creación. A través de estas experiencias buscamos tender puentes entre profesionales y no profesionales para favorecer la colaboración, el intercambio y el crecimiento dentro de la comunidad artística en Mallorca."
+    },
+    "instructors": {
+        "title": "Dirección pedagógica y artística",
+        "name": "Cate Barceló",
+        "bio1": "Bailarina, pedagoga de la danza y creadora nacida en la isla de Mallorca. Estudia el grado profesional de danza clásica en el Conservatorio Profesional de Música y Danza de Palma. Continúa sus estudios en el Grado Superior de Pedagogía de la Danza en el Institut del Teatre de Barcelona y en el programa Modern Dance Theatre en la Academy of Theatre and Dance de Ámsterdam. Realiza sus prácticas pedagógicas en el proyecto TOT DANSA del Mercat de les Flors junto al coreógrafo João Lima y asiste pedagógicamente en los proyectos Five Days to Dance y Family Concert en el Concertgebouworkest de Ámsterdam con DE LooPERS.",
+        "bio2": "Como pedagoga de la danza, hace más de diez años que desarrolla su práctica docente en reconocidas escuelas de danza tanto en Barcelona como en Mallorca, enseñando danza contemporánea y danza clásica a alumnas de diferentes contextos, edades y niveles. Desde hace un año, colabora con la Asociación de Profesionales de la Danza de las Islas Baleares (APDIB), ofreciendo entrenamientos para profesionales y talleres de danza comunitarios. Como bailarina, ha trabajado en diferentes proyectos junto a artistas visuales, plásticos y escultores. A principios de 2024, crea, junto a Zoe Gyssler y Valentina Russo, el colectivo de danza teatro Catzoval, donde actualmente está trabajando en la creación de la pieza In-corpore."
+    },
+    "classes": {
+        "title": "Clases",
+        "creative": {
+            "title": "Danza Creativa",
+            "age": "7-10 años",
+            "description": "En las clases de Danza Creativa se fomenta la expresión corporal, la imaginación y el trabajo en grupo a través del movimiento. A partir del juego, la improvisación y dinámicas grupales los niños y niñas desarrollarán la coordinación, el ritmo, la conciencia espacial y la confianza en sí mismos y en los otros. Se promueve un ambiente lúdico y seguro donde cada niño podrá explorar, crear y disfrutar de su propio movimiento."
+        },
+        "contemporary": {
+            "title": "Danza Contemporánea Adolescentes",
+            "age": "+11 años",
+            "description": "La clase de Danza Contemporánea para Adolescentes ofrece un espacio dinámico para explorar el movimiento desde la técnica, la creación y la expresión personal. A través de ejercicios técnicos, trabajo en el suelo, secuencias coreográficas y propuestas de improvisación, los alumnos desarrollarán la conciencia corporal, la sensibilidad artística y la escucha propia y grupal. La clase estimula el trabajo colaborativo, el desarrollo de un lenguaje corporal propio, la reflexión y la conexión individual."
+        },
+        "classical": {
+            "title": "Ballet Infantil",
+            "age": "8-12 años",
+            "description": "Las clase de Danza Clásica para niños y niñas de 8 a 12 años introduce y asienta las bases de la técnica del ballet de forma progresiva, respetando el desarrollo físico, cognitivo y emocional de los alumnos. A través de ejercicios en el suelo, la barra, el centro y pequeñas combinaciones, se trabajará la colocación, la coordinación, la musicalidad y la disciplina, sin dejar de lado el disfrute y la expresión artística. El ambiente es amable y familiar, fomentando la constancia, el trabajo en equipo y el amor por la danza clásica desde una base sólida y motivadora."
+        },
+        "adults1": {
+            "title": "Danza Contemporánea Adultos I",
+            "description": "La clase de Danza Contemporánea para Adultos I está pensada para personas sin experiencia previa. Facilitaremos una introducción amable y accesible al mundo del movimiento y de la danza. A través de ejercicios simples e improvisaciones pautadas, exploramos la conciencia corporal, el ritmo y la expresión personal. El enfoque es creativo, con propuestas que invitan a moverse con libertad, soltar tensiones y redescubrir el cuerpo como un medio de comunicación y bienestar."
+        },
+        "adults2": {
+            "title": "Danza Contemporánea Adultos II",
+            "description": "La clase de Danza Contemporánea para Adultos II está dirigida a personas con algo de experiencia en danza o movimiento: quienes hayan bailado en el pasado, practiquen yoga, teatro u otras disciplinas corporales. En esta clase nos enfocamos en la técnica y la creación. A través del trabajo en el suelo, la improvisación y las secuencias coreográficas, buscamos afinar la conciencia corporal y ampliar tanto el rango como las calidades del movimiento. Es un espacio para seguir desarrollando habilidades, compartir en grupo y encontrar libertad dentro de la estructura, todo en un ambiente creativo, estimulante y cercano."
+        },
+        "classicalAdults": {
+            "title": "Ballet Adultos",
+            "description": "La clase de Danza Clásica para Adultos está diseñada para quienes desean acercarse al ballet por primera vez o retomar la práctica desde una base accesible y amable. Se trabaja la técnica — colocación, alineación, coordinación, musicalidad y fuerza— a través de ejercicios simples en la barra, en el centro y en pequeñas combinaciones. El enfoque es progresivo, respetando el cuerpo y el ritmo de cada persona, en un ambiente sin exigencias ni encorsetamientos donde el disfrute del movimiento, la armonía y el bienestar físico y emocional serán lo más importante."
+        },
+        "lab": {
+            "title": "LAB Creativo",
+            "description": "El Laboratorio creativo (LAB creativo) es un espacio abierto para personas con o sin experiencia en el movimiento, donde el objetivo principal es habitar el cuerpo desde lo artístico y lo expresivo, explorando e investigando sus posibilidades físicas. A través de la improvisación guiada, investigación del gesto y la creación, se invita a descubrir un lenguaje corporal propio, conectando con otros cuerpos para así desarrollar la creatividad en el movimiento. Es un espacio seguro y libre de juicio, donde el cuerpo es protagonista y el proceso es la base del aprendizaje. Esta clase es la única que se realiza una vez por semana y se podrá tomar de forma regular o suelta."
+        }
+    },
+    "schedule": {
+        "title": "Horario Curso 2025/26",
+        "monday": "Lunes y Miércoles",
+        "tuesday": "Martes y Jueves",
+        "friday": "Viernes",
+        "creative": "Danza Creativa",
+        "contemporary": "Danza Contemporánea Adolescentes",
+        "adults": "Danza Contemporánea Adultos I",
+        "classical": "Ballet Infantil",
+        "classicalAdults": "Ballet Adultos",
+        "adults2": "Danza Contemporánea Adultos II",
+        "lab": "LAB Creativo"
+    },
+    "space": {
+        "title": "Espacio",
+        "description": "Espai Cos es ideal para ensayar danza y teatro.Organizar castings, rodajes, sesiones fotográficas, pequeñas presentaciones, muestras de procesos en creación…",
+        "features": "Características",
+        "items": [
+            "80 m2",
+            "Aire acondicionado (frío, calor y renovación de aire)",
+            "Red Wifi",
+            "Tarima amortiguadora y linóleo Harlequin",
+            "2 barras de ballet de 3 m. de Dinamica Ballet",
+            "Equipo de sonido de calidad",
+            "Focos puntuales escénicos",
+            "Grada para público",
+            "Cortina que cubre espejos y ventanas",
+            "Fuente de agua potable",
+            "Luz natural"
+        ]
+    },
+    "pricing": {
+        "title": "Precios",
+        "items": {
+            "2h_week": "2h/semana",
+            "2h30_week": "2h y 30min/semana", 
+            "3h30_week": "3h y 30min/semana",
+            "4h_week": "4h/semana",
+            "4h30_week": "4h y 30min/semana",
+            "6h_week": "6h/semana",
+            "lab_class": "20€/clase",
+            "lab_month": "50€/mes"
+        },
+        "enrollment": "No hay matrícula",
+        "trial": "La clase de prueba son 15€, que quedan descontados del mes una vez inscritos al estudio"
+    },
+    "contact": {
+        "title": "Apúntate!",
+        "name": "Nombre",
+        "surname": "Apellidos",
+        "birthday": "Fecha de nacimiento",
+        "email": "Email",
+        "phone": "Phone",
+        "class_interest": "En qué clase estás interesada?",
+        "experience": "Experiencia con el movimiento (danza, teatro, yoga, deportes, etc)",
+        "other_questions": "Otras consultas",
+        "submit": "Enviar"
+    },
+    "footer": {
+        "copyright": "© 2025, Espai Cos",
+        "legal_notice": "Aviso legal",
+        "privacy_policy": "Política de Privacidad", 
+        "cookies_policy": "Política de cookies",
+        "address_title": "Dirección",
+        "address": "C/ de la Mar Mediterrànea 10, ESC 1 1r B, 07184 Calvià, Mallorca",
+        "contact_title": "Contacto",
+        "newsletter_title": "Suscríbete a la newsletter",
+        "newsletter_placeholder": "Escribe tu e-mail",
+        "newsletter_button": "Suscribirte",
+        "newsletter_error": "Por favor, introduce un email válido.",
+        "newsletter_success": "¡Gracias por suscribirte!",
+        "back_to_top": "Volver al inicio"
+    },
+    "menu": {
+        "home": "Espai Cos",
+        "instructors": "Dirección",
+        "classes": "Clases",
+        "schedule": "Horarios",
+        "space": "Espacio",
+        "pricing": "Precios",
+        "contact": "Apúntate"
+    }
+} 

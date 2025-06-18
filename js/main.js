@@ -208,78 +208,126 @@ function initializeAnimations() {
 document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section[data-bgcolor]');
     const body = document.body;
+    let ticking = false;
   
     function changeBgOnScroll() {
-      let found = false;
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        // Check if section is at least partially in the viewport
-        if (rect.top < window.innerHeight && rect.bottom > 0 && !found) {
-          const color = section.getAttribute('data-bgcolor');
-          body.style.backgroundColor = color;
-          found = true;
+        let found = false;
+        sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            // More aggressive detection: check if section is in viewport center area
+            const centerY = window.innerHeight / 2;
+            if (rect.top <= centerY && rect.bottom >= centerY && !found) {
+                const color = section.getAttribute('data-bgcolor');
+                body.style.backgroundColor = color;
+                found = true;
+            }
+        });
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(changeBgOnScroll);
+            ticking = true;
         }
-      });
     }
   
-    window.addEventListener('scroll', changeBgOnScroll, { passive: true });
+    // Multiple event listeners for better mobile support
+    window.addEventListener('scroll', requestTick, { passive: true });
+    
+    // Add touch-specific events for mobile
+    window.addEventListener('touchmove', requestTick, { passive: true });
+    window.addEventListener('touchend', () => {
+        // Small delay to catch final position after touch scrolling
+        setTimeout(changeBgOnScroll, 100);
+    }, { passive: true });
+    
+    // Intersection Observer as backup for mobile
+    const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -20% 0px', // Only trigger when section is in center 60% of viewport
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const color = entry.target.getAttribute('data-bgcolor');
+                body.style.backgroundColor = color;
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all sections with data-bgcolor
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+    
     changeBgOnScroll(); // Set initial color
-  });
+});
 
   document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('.newsletter-form');
-    if (!form) return;
-    const input = form.querySelector('input[type="email"]');
-    const button = form.querySelector('button');
-    const error = form.querySelector('.newsletter-error');
-    const success = form.querySelector('.newsletter-success');
+    const forms = document.querySelectorAll('.newsletter-form');
+    
+    forms.forEach(form => {
+        const input = form.querySelector('input[type="text"]');
+        const button = form.querySelector('button');
+        const error = form.querySelector('.newsletter-error');
+        const success = form.querySelector('.newsletter-success');
 
-    // Prevent browser's default validation messages
-    input.setAttribute('novalidate', true);
-    input.addEventListener('invalid', function(e) {
-        e.preventDefault(); // Prevent browser's default validation popup
-    }, true);
+        if (!input || !button || !error || !success) return;
 
-    // Hide the button initially
-    button.style.display = 'none';
-    error.style.display = 'none';
-    success.style.display = 'none';
+        // Prevent browser's default validation messages
+        input.setAttribute('novalidate', true);
+        input.addEventListener('invalid', function(e) {
+            e.preventDefault(); // Prevent browser's default validation popup
+        }, true);
 
-    // Show the button when the user types something
-    input.addEventListener('input', function() {
-        // Remove any validation styling from browser
-        this.setCustomValidity('');
-        
-        if (input.value.trim().length > 0) {
-            button.style.display = '';
-            error.style.display = 'none';
-            success.style.display = 'none';
-        } else {
-            button.style.display = 'none';
-            error.style.display = 'none';
-            success.style.display = 'none';
-        }
-    });
+        // Hide the button initially
+        button.style.display = 'none';
+        error.style.display = 'none';
+        success.style.display = 'none';
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Custom email validation regex
-        const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
-        if (!input.value || !emailPattern.test(input.value.trim())) {
-            error.textContent = 'Por favor, introduce un email válido.';
-            error.style.display = 'block';
-            success.style.display = 'none';
-            input.focus();
-        } else {
-            error.style.display = 'none';
-            success.textContent = '¡Gracias por suscribirte!';
-            success.style.display = 'block';
-            // Optionally, send the email to your server here
-            form.reset();
-            button.style.display = 'none';
-            setTimeout(() => {
+        // Show the button when the user types something
+        input.addEventListener('input', function() {
+            // Remove any validation styling from browser
+            this.setCustomValidity('');
+            
+            if (input.value.trim().length > 0) {
+                button.style.display = '';
+                error.style.display = 'none';
                 success.style.display = 'none';
-            }, 3000); // Hide success after 3 seconds
-        }
+            } else {
+                button.style.display = 'none';
+                error.style.display = 'none';
+                success.style.display = 'none';
+            }
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Custom email validation regex
+            const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+            if (!input.value || !emailPattern.test(input.value.trim())) {
+                // Get translation from translation system if available
+                const errorMsg = window.currentTranslations?.footer?.newsletter_error || 'Por favor, introduce un email válido.';
+                error.textContent = errorMsg;
+                error.style.display = 'block';
+                success.style.display = 'none';
+                input.focus();
+            } else {
+                error.style.display = 'none';
+                // Get translation from translation system if available
+                const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
+                success.textContent = successMsg;
+                success.style.display = 'block';
+                // Optionally, send the email to your server here
+                form.reset();
+                button.style.display = 'none';
+                setTimeout(() => {
+                    success.style.display = 'none';
+                }, 3000); // Hide success after 3 seconds
+            }
+        });
     });
 });
