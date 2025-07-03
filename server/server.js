@@ -13,7 +13,16 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '..')));
+
+// Static file serving - try multiple paths to ensure compatibility
+const staticPath = path.join(__dirname, '..');
+console.log('Static path:', staticPath);
+console.log('Current directory:', __dirname);
+console.log('Production mode:', isProduction);
+
+app.use(express.static(staticPath));
+// Also try serving from current directory in case files are there
+app.use(express.static(__dirname));
 
 // Database setup
 let db;
