@@ -10,6 +10,9 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Environment setup
+const isProduction = process.env.NODE_ENV === 'production';
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -26,7 +29,6 @@ app.use(express.static(__dirname));
 
 // Database setup
 let db;
-const isProduction = process.env.NODE_ENV === 'production';
 
 if (isProduction && process.env.POSTGRES_URL) {
     // Production: Use Postgres
