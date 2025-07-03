@@ -2,13 +2,7 @@
   "version": 2,
   "functions": {
     "server/server.js": {
-      "includeFiles": [
-        "css/**",
-        "js/**",
-        "assets/**",
-        "index.html",
-        "admin.html"
-      ]
+      "includeFiles": "**"
     }
   },
   "routes": [
