@@ -3,6 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const cors = require('cors');
+const fs = require('fs');
 
 // Load environment variables
 dotenv.config();
@@ -17,15 +18,40 @@ const isProduction = process.env.NODE_ENV === 'production';
 app.use(cors());
 app.use(express.json());
 
+// Debug middleware to log all requests
+app.use((req, res, next) => {
+    console.log(`Request: ${req.method} ${req.path}`);
+    next();
+});
+
 // Static file serving - try multiple paths to ensure compatibility
 const staticPath = path.join(__dirname, '..');
 console.log('Static path:', staticPath);
 console.log('Current directory:', __dirname);
 console.log('Production mode:', isProduction);
 
+// Check if critical files exist
+const criticalFiles = [
+    path.join(staticPath, 'index.html'),
+    path.join(staticPath, 'css', 'styles.css'),
+    path.join(staticPath, 'js', 'language.js'),
+    path.join(staticPath, 'js', 'main.js'),
+    path.join(__dirname, 'index.html'),
+    path.join(__dirname, 'css', 'styles.css'),
+    path.join(__dirname, 'js', 'language.js')
+];
+
+criticalFiles.forEach(file => {
+    const exists = fs.existsSync(file);
+    console.log(`File ${file}: ${exists ? 'EXISTS' : 'NOT FOUND'}`);
+});
+
+// Try serving static files from multiple locations
 app.use(express.static(staticPath));
-// Also try serving from current directory in case files are there
 app.use(express.static(__dirname));
+app.use('/css', express.static(path.join(staticPath, 'css')));
+app.use('/js', express.static(path.join(staticPath, 'js')));
+app.use('/assets', express.static(path.join(staticPath, 'assets')));
 
 // Database setup
 let db;
@@ -286,8 +312,23 @@ app.post('/api/create-payment', async (req, res) => {
     }
 });
 
+// Debug route for static files
+app.get(['/css/*', '/js/*', '/assets/*'], (req, res) => {
+    console.log(`Static file request not handled: ${req.path}`);
+    const filePath = path.join(__dirname, '..', req.path);
+    console.log(`Trying to serve: ${filePath}`);
+    console.log(`File exists: ${fs.existsSync(filePath)}`);
+    
+    if (fs.existsSync(filePath)) {
+        res.sendFile(filePath);
+    } else {
+        res.status(404).send(`File not found: ${req.path}`);
+    }
+});
+
 // Serve the main page for all other routes
 app.get('*', (req, res) => {
+    console.log(`Serving index.html for: ${req.path}`);
     res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
