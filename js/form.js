@@ -99,10 +99,18 @@ class FormValidator {
     }
 
     async submitForm(formData) {
-        // Replace with your actual form submission endpoint
+        // Convert FormData to JSON object
+        const data = {};
+        for (let [key, value] of formData.entries()) {
+            data[key] = value;
+        }
+        
         const response = await fetch('/api/submit-form', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
         });
 
         if (!response.ok) {
