@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
-const sqlite3 = require('sqlite3').verbose();
 const { Pool } = require('pg');
 const cors = require('cors');
 
@@ -31,7 +30,8 @@ if (isProduction && process.env.POSTGRES_URL) {
     console.log('Connected to PostgreSQL database');
     initializeDatabase();
 } else {
-    // Development: Use SQLite
+    // Development: Use SQLite (conditionally require to avoid issues in production)
+    const sqlite3 = require('sqlite3').verbose();
     db = new sqlite3.Database(path.join(__dirname, 'database.sqlite'), (err) => {
         if (err) {
             console.error('Error connecting to database:', err);
