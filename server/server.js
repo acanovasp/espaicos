@@ -55,6 +55,7 @@ app.use('/assets', express.static(path.join(staticPath, 'assets')));
 
 // Database setup
 let db;
+let databaseInitialized = false;
 
 if (isProduction && process.env.POSTGRES_URL) {
     // Production: Use Postgres
@@ -66,12 +67,6 @@ if (isProduction && process.env.POSTGRES_URL) {
     });
     console.log('Connected to PostgreSQL database');
     console.log('Database URL:', process.env.POSTGRES_URL ? 'Set' : 'Not set');
-    console.log('Database URL prefix:', process.env.POSTGRES_URL ? process.env.POSTGRES_URL.substring(0, 30) + '...' : 'Not set');
-    // Initialize database tables immediately
-    initializeDatabase().catch(err => {
-        console.error('Failed to initialize database:', err);
-        console.error('Full error details:', err);
-    });
 } else {
     // Development: Use SQLite (conditionally require to avoid issues in production)
     const sqlite3 = require('sqlite3').verbose();
@@ -80,9 +75,6 @@ if (isProduction && process.env.POSTGRES_URL) {
             console.error('Error connecting to database:', err);
         } else {
             console.log('Connected to SQLite database');
-            initializeDatabase().catch(err => {
-                console.error('Failed to initialize database:', err);
-            });
         }
     });
 }
@@ -137,21 +129,25 @@ const dbQuery = {
     }
 };
 
-// Initialize database tables
+// Initialize database tables - robust version
 async function initializeDatabase() {
+    if (databaseInitialized) {
+        console.log('Database already initialized, skipping...');
+        return;
+    }
+
     try {
         console.log('Starting database initialization...');
         
         if (isProduction) {
-            console.log('Initializing PostgreSQL tables...');
+            console.log('Creating PostgreSQL tables...');
             
             // Test database connection first
-            console.log('Testing database connection...');
-            await db.query('SELECT 1');
+            await db.query('SELECT NOW()');
             console.log('Database connection test successful');
-            // PostgreSQL syntax
-            console.log('Creating contact_submissions table...');
-            await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
+
+            // Create contact_submissions table
+            const createContactTable = `CREATE TABLE IF NOT EXISTS contact_submissions (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 surname TEXT,
@@ -162,21 +158,22 @@ async function initializeDatabase() {
                 experience TEXT,
                 message TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )`);
-            console.log('contact_submissions table created successfully');
+            )`;
+            
+            await db.query(createContactTable);
+            console.log('contact_submissions table created/verified');
 
-            console.log('Creating users table...');
-            await dbQuery.run(`CREATE TABLE IF NOT EXISTS users (
+            // Create other tables
+            await db.query(`CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 email TEXT UNIQUE NOT NULL,
                 phone TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`);
-            console.log('users table created successfully');
+            console.log('users table created/verified');
 
-            console.log('Creating classes table...');
-            await dbQuery.run(`CREATE TABLE IF NOT EXISTS classes (
+            await db.query(`CREATE TABLE IF NOT EXISTS classes (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 description TEXT,
@@ -185,18 +182,19 @@ async function initializeDatabase() {
                 capacity INTEGER,
                 price DECIMAL(10,2)
             )`);
-            console.log('classes table created successfully');
+            console.log('classes table created/verified');
 
-            console.log('Creating bookings table...');
-            await dbQuery.run(`CREATE TABLE IF NOT EXISTS bookings (
+            await db.query(`CREATE TABLE IF NOT EXISTS bookings (
                 id SERIAL PRIMARY KEY,
                 user_id INTEGER REFERENCES users(id),
                 class_id INTEGER REFERENCES classes(id),
                 booking_date TIMESTAMP,
                 status TEXT
             )`);
-            console.log('bookings table created successfully');
+            console.log('bookings table created/verified');
+
         } else {
+            console.log('Creating SQLite tables...');
             // SQLite syntax
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -239,22 +237,41 @@ async function initializeDatabase() {
                 FOREIGN KEY (class_id) REFERENCES classes(id)
             )`);
         }
+        
+        databaseInitialized = true;
         console.log('Database tables initialized successfully');
+        
+        // Verify the table was created
+        if (isProduction) {
+            const result = await db.query("SELECT to_regclass('contact_submissions')");
+            console.log('Table verification result:', result.rows[0]);
+        }
+        
     } catch (error) {
         console.error('Error initializing database:', error);
-        console.error('Error details:', {
-            message: error.message,
-            code: error.code,
-            stack: error.stack
-        });
-        throw error; // Re-throw to make sure the calling code knows initialization failed
+        console.error('Error details:', error.message);
+        console.error('Error stack:', error.stack);
+        throw error; // Re-throw to ensure calling code knows initialization failed
     }
+}
+
+// Middleware to ensure database is initialized before handling requests
+async function ensureDatabaseInitialized(req, res, next) {
+    if (!databaseInitialized) {
+        try {
+            await initializeDatabase();
+        } catch (error) {
+            console.error('Failed to initialize database:', error);
+            return res.status(500).json({ error: 'Database initialization failed' });
+        }
+    }
+    next();
 }
 
 // API Routes
 
 // Get all contact form submissions (for admin panel)
-app.get('/api/admin/submissions', async (req, res) => {
+app.get('/api/admin/submissions', ensureDatabaseInitialized, async (req, res) => {
     try {
         const rows = await dbQuery.all(`SELECT * FROM contact_submissions ORDER BY created_at DESC`);
         res.json(rows);
@@ -265,7 +282,7 @@ app.get('/api/admin/submissions', async (req, res) => {
 });
 
 // Get individual submission by ID
-app.get('/api/admin/submissions/:id', async (req, res) => {
+app.get('/api/admin/submissions/:id', ensureDatabaseInitialized, async (req, res) => {
     try {
         const { id } = req.params;
         const row = await dbQuery.get(`SELECT * FROM contact_submissions WHERE id = ${isProduction ? '$1' : '?'}`, [id]);
@@ -281,7 +298,7 @@ app.get('/api/admin/submissions/:id', async (req, res) => {
     }
 });
 
-app.get('/api/classes', async (req, res) => {
+app.get('/api/classes', ensureDatabaseInitialized, async (req, res) => {
     try {
         const rows = await dbQuery.all('SELECT * FROM classes');
         res.json(rows);
@@ -291,7 +308,7 @@ app.get('/api/classes', async (req, res) => {
     }
 });
 
-app.post('/api/bookings', async (req, res) => {
+app.post('/api/bookings', ensureDatabaseInitialized, async (req, res) => {
     try {
         const { user_id, class_id, booking_date } = req.body;
         const placeholders = isProduction ? '($1, $2, $3, $4)' : '(?, ?, ?, ?)';
@@ -308,7 +325,7 @@ app.post('/api/bookings', async (req, res) => {
 });
 
 // Form submission endpoint
-app.post('/api/submit-form', async (req, res) => {
+app.post('/api/submit-form', ensureDatabaseInitialized, async (req, res) => {
     try {
         const { name, surname, birthday, email, phone, schedule, experience, message } = req.body;
         
