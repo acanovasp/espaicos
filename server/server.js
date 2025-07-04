@@ -66,9 +66,11 @@ if (isProduction && process.env.POSTGRES_URL) {
     });
     console.log('Connected to PostgreSQL database');
     console.log('Database URL:', process.env.POSTGRES_URL ? 'Set' : 'Not set');
+    console.log('Database URL prefix:', process.env.POSTGRES_URL ? process.env.POSTGRES_URL.substring(0, 30) + '...' : 'Not set');
     // Initialize database tables immediately
     initializeDatabase().catch(err => {
         console.error('Failed to initialize database:', err);
+        console.error('Full error details:', err);
     });
 } else {
     // Development: Use SQLite (conditionally require to avoid issues in production)
@@ -138,8 +140,17 @@ const dbQuery = {
 // Initialize database tables
 async function initializeDatabase() {
     try {
+        console.log('Starting database initialization...');
+        
         if (isProduction) {
+            console.log('Initializing PostgreSQL tables...');
+            
+            // Test database connection first
+            console.log('Testing database connection...');
+            await db.query('SELECT 1');
+            console.log('Database connection test successful');
             // PostgreSQL syntax
+            console.log('Creating contact_submissions table...');
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -152,7 +163,9 @@ async function initializeDatabase() {
                 message TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`);
+            console.log('contact_submissions table created successfully');
 
+            console.log('Creating users table...');
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -160,7 +173,9 @@ async function initializeDatabase() {
                 phone TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`);
+            console.log('users table created successfully');
 
+            console.log('Creating classes table...');
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS classes (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
@@ -170,7 +185,9 @@ async function initializeDatabase() {
                 capacity INTEGER,
                 price DECIMAL(10,2)
             )`);
+            console.log('classes table created successfully');
 
+            console.log('Creating bookings table...');
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS bookings (
                 id SERIAL PRIMARY KEY,
                 user_id INTEGER REFERENCES users(id),
@@ -178,6 +195,7 @@ async function initializeDatabase() {
                 booking_date TIMESTAMP,
                 status TEXT
             )`);
+            console.log('bookings table created successfully');
         } else {
             // SQLite syntax
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
@@ -221,9 +239,15 @@ async function initializeDatabase() {
                 FOREIGN KEY (class_id) REFERENCES classes(id)
             )`);
         }
-        console.log('Database tables initialized');
+        console.log('Database tables initialized successfully');
     } catch (error) {
         console.error('Error initializing database:', error);
+        console.error('Error details:', {
+            message: error.message,
+            code: error.code,
+            stack: error.stack
+        });
+        throw error; // Re-throw to make sure the calling code knows initialization failed
     }
 }
 
