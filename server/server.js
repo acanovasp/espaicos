@@ -65,7 +65,11 @@ if (isProduction && process.env.POSTGRES_URL) {
         }
     });
     console.log('Connected to PostgreSQL database');
-    initializeDatabase();
+    console.log('Database URL:', process.env.POSTGRES_URL ? 'Set' : 'Not set');
+    // Initialize database tables immediately
+    initializeDatabase().catch(err => {
+        console.error('Failed to initialize database:', err);
+    });
 } else {
     // Development: Use SQLite (conditionally require to avoid issues in production)
     const sqlite3 = require('sqlite3').verbose();
@@ -74,7 +78,9 @@ if (isProduction && process.env.POSTGRES_URL) {
             console.error('Error connecting to database:', err);
         } else {
             console.log('Connected to SQLite database');
-            initializeDatabase();
+            initializeDatabase().catch(err => {
+                console.error('Failed to initialize database:', err);
+            });
         }
     });
 }
@@ -84,9 +90,12 @@ const dbQuery = {
     run: async (query, params = []) => {
         if (isProduction) {
             try {
+                console.log('Executing query:', query);
                 const result = await db.query(query, params);
                 return { lastID: result.rows[0]?.id, changes: result.rowCount };
             } catch (err) {
+                console.error('Query error:', err.message);
+                console.error('Query:', query);
                 throw err;
             }
         } else {
@@ -262,8 +271,9 @@ app.post('/api/bookings', async (req, res) => {
     try {
         const { user_id, class_id, booking_date } = req.body;
         const placeholders = isProduction ? '($1, $2, $3, $4)' : '(?, ?, ?, ?)';
+        const returning = isProduction ? ' RETURNING id' : '';
         const result = await dbQuery.run(
-            `INSERT INTO bookings (user_id, class_id, booking_date, status) VALUES ${placeholders}`,
+            `INSERT INTO bookings (user_id, class_id, booking_date, status) VALUES ${placeholders}${returning}`,
             [user_id, class_id, booking_date, 'pending']
         );
         res.json({ id: result.lastID });
@@ -284,10 +294,11 @@ app.post('/api/submit-form', async (req, res) => {
         }
         
         const placeholders = isProduction ? '($1, $2, $3, $4, $5, $6, $7, $8)' : '(?, ?, ?, ?, ?, ?, ?, ?)';
+        const returning = isProduction ? ' RETURNING id' : '';
         const result = await dbQuery.run(
             `INSERT INTO contact_submissions 
              (name, surname, birthday, email, phone, schedule, experience, message) 
-             VALUES ${placeholders}`,
+             VALUES ${placeholders}${returning}`,
             [name, surname, birthday, email, phone, schedule, experience, message]
         );
         
