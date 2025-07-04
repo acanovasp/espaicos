@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
-const { Pool } = require('pg');
 const cors = require('cors');
 const fs = require('fs');
 
@@ -57,8 +56,13 @@ app.use('/assets', express.static(path.join(staticPath, 'assets')));
 let db;
 let databaseInitialized = false;
 
-if (isProduction && process.env.POSTGRES_URL) {
-    // Production: Use Postgres
+if (isProduction) {
+    // Production: Only use PostgreSQL
+    if (!process.env.POSTGRES_URL) {
+        throw new Error('POSTGRES_URL environment variable is required in production');
+    }
+    
+    const { Pool } = require('pg');
     db = new Pool({
         connectionString: process.env.POSTGRES_URL,
         ssl: {
@@ -68,15 +72,21 @@ if (isProduction && process.env.POSTGRES_URL) {
     console.log('Connected to PostgreSQL database');
     console.log('Database URL:', process.env.POSTGRES_URL ? 'Set' : 'Not set');
 } else {
-    // Development: Use SQLite (conditionally require to avoid issues in production)
-    const sqlite3 = require('sqlite3').verbose();
-    db = new sqlite3.Database(path.join(__dirname, 'database.sqlite'), (err) => {
-        if (err) {
-            console.error('Error connecting to database:', err);
-        } else {
-            console.log('Connected to SQLite database');
-        }
-    });
+    // Development: Use SQLite
+    try {
+        const sqlite3 = require('sqlite3').verbose();
+        db = new sqlite3.Database(path.join(__dirname, 'database.sqlite'), (err) => {
+            if (err) {
+                console.error('Error connecting to database:', err);
+            } else {
+                console.log('Connected to SQLite database');
+            }
+        });
+    } catch (error) {
+        console.error('SQLite3 not available, falling back to mock database for testing');
+        // Fallback for development environments without SQLite3
+        db = null;
+    }
 }
 
 // Database abstraction layer
@@ -93,6 +103,9 @@ const dbQuery = {
                 throw err;
             }
         } else {
+            if (!db) {
+                throw new Error('Database not available');
+            }
             return new Promise((resolve, reject) => {
                 db.run(query, params, function(err) {
                     if (err) reject(err);
@@ -106,6 +119,9 @@ const dbQuery = {
             const result = await db.query(query, params);
             return result.rows[0];
         } else {
+            if (!db) {
+                throw new Error('Database not available');
+            }
             return new Promise((resolve, reject) => {
                 db.get(query, params, (err, row) => {
                     if (err) reject(err);
@@ -119,6 +135,9 @@ const dbQuery = {
             const result = await db.query(query, params);
             return result.rows;
         } else {
+            if (!db) {
+                throw new Error('Database not available');
+            }
             return new Promise((resolve, reject) => {
                 db.all(query, params, (err, rows) => {
                     if (err) reject(err);
@@ -195,6 +214,9 @@ async function initializeDatabase() {
 
         } else {
             console.log('Creating SQLite tables...');
+            if (!db) {
+                throw new Error('SQLite database not available');
+            }
             // SQLite syntax
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
