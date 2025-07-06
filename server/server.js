@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
+const { Pool } = require('pg');
 const cors = require('cors');
 const fs = require('fs');
 
@@ -54,15 +55,9 @@ app.use('/assets', express.static(path.join(staticPath, 'assets')));
 
 // Database setup
 let db;
-let databaseInitialized = false;
 
-if (isProduction) {
-    // Production: Only use PostgreSQL
-    if (!process.env.POSTGRES_URL) {
-        throw new Error('POSTGRES_URL environment variable is required in production');
-    }
-    
-    const { Pool } = require('pg');
+if (isProduction && process.env.POSTGRES_URL) {
+    // Production: Use Postgres
     db = new Pool({
         connectionString: process.env.POSTGRES_URL,
         ssl: {
@@ -71,22 +66,23 @@ if (isProduction) {
     });
     console.log('Connected to PostgreSQL database');
     console.log('Database URL:', process.env.POSTGRES_URL ? 'Set' : 'Not set');
+    // Initialize database tables immediately
+    initializeDatabase().catch(err => {
+        console.error('Failed to initialize database:', err);
+    });
 } else {
-    // Development: Use SQLite
-    try {
-        const sqlite3 = require('sqlite3').verbose();
-        db = new sqlite3.Database(path.join(__dirname, 'database.sqlite'), (err) => {
-            if (err) {
-                console.error('Error connecting to database:', err);
-            } else {
-                console.log('Connected to SQLite database');
-            }
-        });
-    } catch (error) {
-        console.error('SQLite3 not available, falling back to mock database for testing');
-        // Fallback for development environments without SQLite3
-        db = null;
-    }
+    // Development: Use SQLite (conditionally require to avoid issues in production)
+    const sqlite3 = require('sqlite3').verbose();
+    db = new sqlite3.Database(path.join(__dirname, 'database.sqlite'), (err) => {
+        if (err) {
+            console.error('Error connecting to database:', err);
+        } else {
+            console.log('Connected to SQLite database');
+            initializeDatabase().catch(err => {
+                console.error('Failed to initialize database:', err);
+            });
+        }
+    });
 }
 
 // Database abstraction layer
@@ -103,9 +99,6 @@ const dbQuery = {
                 throw err;
             }
         } else {
-            if (!db) {
-                throw new Error('Database not available');
-            }
             return new Promise((resolve, reject) => {
                 db.run(query, params, function(err) {
                     if (err) reject(err);
@@ -119,9 +112,6 @@ const dbQuery = {
             const result = await db.query(query, params);
             return result.rows[0];
         } else {
-            if (!db) {
-                throw new Error('Database not available');
-            }
             return new Promise((resolve, reject) => {
                 db.get(query, params, (err, row) => {
                     if (err) reject(err);
@@ -135,9 +125,6 @@ const dbQuery = {
             const result = await db.query(query, params);
             return result.rows;
         } else {
-            if (!db) {
-                throw new Error('Database not available');
-            }
             return new Promise((resolve, reject) => {
                 db.all(query, params, (err, rows) => {
                     if (err) reject(err);
@@ -148,25 +135,12 @@ const dbQuery = {
     }
 };
 
-// Initialize database tables - robust version
+// Initialize database tables
 async function initializeDatabase() {
-    if (databaseInitialized) {
-        console.log('Database already initialized, skipping...');
-        return;
-    }
-
     try {
-        console.log('Starting database initialization...');
-        
         if (isProduction) {
-            console.log('Creating PostgreSQL tables...');
-            
-            // Test database connection first
-            await db.query('SELECT NOW()');
-            console.log('Database connection test successful');
-
-            // Create contact_submissions table
-            const createContactTable = `CREATE TABLE IF NOT EXISTS contact_submissions (
+            // PostgreSQL syntax
+            await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 surname TEXT,
@@ -177,22 +151,17 @@ async function initializeDatabase() {
                 experience TEXT,
                 message TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )`;
-            
-            await db.query(createContactTable);
-            console.log('contact_submissions table created/verified');
+            )`);
 
-            // Create other tables
-            await db.query(`CREATE TABLE IF NOT EXISTS users (
+            await dbQuery.run(`CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 email TEXT UNIQUE NOT NULL,
                 phone TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`);
-            console.log('users table created/verified');
 
-            await db.query(`CREATE TABLE IF NOT EXISTS classes (
+            await dbQuery.run(`CREATE TABLE IF NOT EXISTS classes (
                 id SERIAL PRIMARY KEY,
                 name TEXT NOT NULL,
                 description TEXT,
@@ -201,22 +170,15 @@ async function initializeDatabase() {
                 capacity INTEGER,
                 price DECIMAL(10,2)
             )`);
-            console.log('classes table created/verified');
 
-            await db.query(`CREATE TABLE IF NOT EXISTS bookings (
+            await dbQuery.run(`CREATE TABLE IF NOT EXISTS bookings (
                 id SERIAL PRIMARY KEY,
                 user_id INTEGER REFERENCES users(id),
                 class_id INTEGER REFERENCES classes(id),
                 booking_date TIMESTAMP,
                 status TEXT
             )`);
-            console.log('bookings table created/verified');
-
         } else {
-            console.log('Creating SQLite tables...');
-            if (!db) {
-                throw new Error('SQLite database not available');
-            }
             // SQLite syntax
             await dbQuery.run(`CREATE TABLE IF NOT EXISTS contact_submissions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -259,41 +221,16 @@ async function initializeDatabase() {
                 FOREIGN KEY (class_id) REFERENCES classes(id)
             )`);
         }
-        
-        databaseInitialized = true;
-        console.log('Database tables initialized successfully');
-        
-        // Verify the table was created
-        if (isProduction) {
-            const result = await db.query("SELECT to_regclass('contact_submissions')");
-            console.log('Table verification result:', result.rows[0]);
-        }
-        
+        console.log('Database tables initialized');
     } catch (error) {
         console.error('Error initializing database:', error);
-        console.error('Error details:', error.message);
-        console.error('Error stack:', error.stack);
-        throw error; // Re-throw to ensure calling code knows initialization failed
     }
-}
-
-// Middleware to ensure database is initialized before handling requests
-async function ensureDatabaseInitialized(req, res, next) {
-    if (!databaseInitialized) {
-        try {
-            await initializeDatabase();
-        } catch (error) {
-            console.error('Failed to initialize database:', error);
-            return res.status(500).json({ error: 'Database initialization failed' });
-        }
-    }
-    next();
 }
 
 // API Routes
 
 // Get all contact form submissions (for admin panel)
-app.get('/api/admin/submissions', ensureDatabaseInitialized, async (req, res) => {
+app.get('/api/admin/submissions', async (req, res) => {
     try {
         const rows = await dbQuery.all(`SELECT * FROM contact_submissions ORDER BY created_at DESC`);
         res.json(rows);
@@ -304,7 +241,7 @@ app.get('/api/admin/submissions', ensureDatabaseInitialized, async (req, res) =>
 });
 
 // Get individual submission by ID
-app.get('/api/admin/submissions/:id', ensureDatabaseInitialized, async (req, res) => {
+app.get('/api/admin/submissions/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const row = await dbQuery.get(`SELECT * FROM contact_submissions WHERE id = ${isProduction ? '$1' : '?'}`, [id]);
@@ -320,7 +257,7 @@ app.get('/api/admin/submissions/:id', ensureDatabaseInitialized, async (req, res
     }
 });
 
-app.get('/api/classes', ensureDatabaseInitialized, async (req, res) => {
+app.get('/api/classes', async (req, res) => {
     try {
         const rows = await dbQuery.all('SELECT * FROM classes');
         res.json(rows);
@@ -330,7 +267,7 @@ app.get('/api/classes', ensureDatabaseInitialized, async (req, res) => {
     }
 });
 
-app.post('/api/bookings', ensureDatabaseInitialized, async (req, res) => {
+app.post('/api/bookings', async (req, res) => {
     try {
         const { user_id, class_id, booking_date } = req.body;
         const placeholders = isProduction ? '($1, $2, $3, $4)' : '(?, ?, ?, ?)';
@@ -347,7 +284,7 @@ app.post('/api/bookings', ensureDatabaseInitialized, async (req, res) => {
 });
 
 // Form submission endpoint
-app.post('/api/submit-form', ensureDatabaseInitialized, async (req, res) => {
+app.post('/api/submit-form', async (req, res) => {
     try {
         const { name, surname, birthday, email, phone, schedule, experience, message } = req.body;
         
