@@ -142,4 +142,90 @@ class FormValidator {
 document.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('form');
     forms.forEach(form => new FormValidator(form));
+});
+
+// Form submission handling
+async function submitForm(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // Show loading state
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+    
+    try {
+        // Use Formspree for simple form handling (no backend needed)
+        const response = await fetch('https://formspree.io/f/mwpbjape', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (response.ok) {
+            // Success
+            form.reset();
+            showMessage('Thank you! Your message has been sent successfully.', 'success');
+        } else {
+            throw new Error('Form submission failed');
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        showMessage('Sorry, there was an error sending your message. Please try again.', 'error');
+    } finally {
+        // Reset button
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+    }
+}
+
+function showMessage(message, type) {
+    // Remove any existing messages
+    const existingMessage = document.querySelector('.form-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    // Create new message
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `form-message ${type}`;
+    messageDiv.textContent = message;
+    
+    // Style the message
+    messageDiv.style.cssText = `
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+        font-weight: bold;
+        ${type === 'success' 
+            ? 'background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;' 
+            : 'background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;'
+        }
+    `;
+    
+    // Insert message after form
+    const form = document.querySelector('form');
+    form.parentNode.insertBefore(messageDiv, form.nextSibling);
+    
+    // Auto-remove success messages after 5 seconds
+    if (type === 'success') {
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 5000);
+    }
+}
+
+// Initialize form handler when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', submitForm);
+    }
 }); 
