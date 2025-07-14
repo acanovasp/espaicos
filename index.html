@@ -334,7 +334,7 @@
     <!-- Form Section -->
     <section id="form-section" class="form-section  bottom-margin" data-bgcolor="var(--beige-color)">
         <h1 class="is-title" data-i18n="contact.title">Apúntate!</h1>
-        <form id="contact-form" class="contact-form">
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mwpbjape" method="POST">
             <div class="form-group is-left">
                 <label for="name" data-i18n="contact.name">Nombre</label>
                 <input type="text" id="name" name="name" required>
@@ -388,14 +388,19 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group is-right">
-                <label for="experience" data-i18n="contact.experience">Experiencia con el movimiento (danza, teatro, yoga, deportes, etc)</label>
-                <textarea id="experience" name="experience" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+            <div class="other-questions-wrapper">
+                <div class="form-group is-right">
+                    <label for="experience" data-i18n="contact.experience">Experiencia con el movimiento (danza, teatro, yoga, deportes, etc)</label>
+                    <textarea id="experience" name="experience" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                </div>
+                <div class="is-right">
+                    <label for="message" data-i18n="contact.other_questions">Otras consultas</label>
+                    <textarea id="message" name="message" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                </div>
             </div>
-            <div class="is-left">
-                <label for="message" data-i18n="contact.other_questions">Otras consultas</label>
-                <textarea id="message" name="message" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
-            </div>
+            <!-- Formspree anti-spam and configuration -->
+            <input type="hidden" name="_subject" value="Nueva inscripción - Espai Cos">
+            <input type="hidden" name="_captcha" value="false">
             <button type="submit" class="btn btn-primary is-right" data-i18n="contact.submit">Enviar</button>
         </form>
         </div>
@@ -446,9 +451,7 @@
 
     <!-- Scripts -->
     <script src="./js/language.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
     <script src="./js/main.js"></script>
     <script src="./js/form.js"></script>
-    <script src="./js/stripe.js"></script>
 </body>
 </html> 

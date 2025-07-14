@@ -294,6 +294,16 @@ document.addEventListener('DOMContentLoaded', () => {
             this.setCustomValidity('');
             
             if (input.value.trim().length > 0) {
+                // Reset button to original state when user starts typing again
+                button.disabled = false;
+                const buttonTexts = {
+                    'es': 'Suscribirte',
+                    'ca': "Subscriure's",
+                    'en': 'Subscribe'
+                };
+                const currentLang = window.currentLang || 'es';
+                button.textContent = buttonTexts[currentLang] || buttonTexts['es'];
+                
                 button.style.display = '';
                 error.style.display = 'none';
                 success.style.display = 'none';
@@ -304,8 +314,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
             // Custom email validation regex
             const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
             if (!input.value || !emailPattern.test(input.value.trim())) {
@@ -315,18 +326,65 @@ document.addEventListener('DOMContentLoaded', () => {
                 error.style.display = 'block';
                 success.style.display = 'none';
                 input.focus();
-            } else {
-                error.style.display = 'none';
-                // Get translation from translation system if available
-                const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
-                success.textContent = successMsg;
-                success.style.display = 'block';
-                // Optionally, send the email to your server here
-                form.reset();
-                button.style.display = 'none';
-                setTimeout(() => {
-                    success.style.display = 'none';
-                }, 3000); // Hide success after 3 seconds
+                return;
+            }
+
+            // Show loading state
+            const originalButtonText = button.textContent;
+            const loadingTexts = {
+                'es': 'Enviando...',
+                'ca': 'Enviant...',
+                'en': 'Sending...'
+            };
+            const currentLang = window.currentLang || 'es';
+            button.textContent = loadingTexts[currentLang] || loadingTexts['es'];
+            button.disabled = true;
+            error.style.display = 'none';
+            success.style.display = 'none';
+
+            try {
+                // Submit to MailerLite
+                const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYjVkYzZhOTVhZDg0NWQwMTQ3MWVhODYwMzQ0NTEyNzg0MTAxOTgxNWJhODI4ODQ1ODE5MjIwNjZmNDhkNGI3MmE1ZmMwY2MwOGU2OTk4MmYiLCJpYXQiOjE3NTE5MDcyNzUuMTI1ODM5LCJuYmYiOjE3NTE5MDcyNzUuMTI1ODQxLCJleHAiOjQ5MDc1ODA4NzUuMTIyNjEsInN1YiI6IjE2NjExMzciLCJzY29wZXMiOltdfQ.Nf4-4-gWhopk2P_f-57YRlxnqXOBhAGDUtU02w1sJOu16uIEwNbdMo09Ndx8u0Ixv0mWzFbzfQlpfM1sCdbN1pPe2iDk4sPNwN_IxB9lbiKNVd9U6KCSSH3X0Bibn4bcYgPnQOKKMtLhIsJMvKITGX3-R0XS7OFu7r4tSA5_TyYzTTyvWimuRQofDLicSDNo_REGZ9Te_adfKfZCNu2uSGmEqjyaGwBvLi8ib6ZYbGTR7nGAzJ7dMxHqgrO3jejbJMTd6xu5ykxRLDMsiLWiy00WTNUfz9s9e8OiDmQisQXJHIR36FsWNLS7Xcndj02JCnW_y6zDa1sKUzONjPmyMZA4VDHXIca6Qce7z235w0qSNReMl023a0v9XFmxewdK7VhN0F3gkgyrbgB1SSIBVChfW5fDu0eLjJlh0grUv5Wk8HqBsN6hV3u6tjMJo6vyFqKsZyM78Asyk8MrKlULOweL0Yx_zaGvA2c8nTyoy4iITrng7vXXyjtxn05uT4KS4LGsvEu5hsOivNDAbBF325uldZlj_P9qk18KqkEC4ydqfCF64cMpcOxPq_EZhkUk52i5nPheuhV0O4AxBw6NYk0sL5NFtn4kWpR_kCAAzIm9zycMcWJksvbCUdvo7y6FRruEuCYd8Pxr2IfNDSGExPC7QzqPUUUYigivjq5iWzg', // Replace with your actual API key
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: input.value.trim(),
+                        groups: ['159286458087114300'], // Replace with your group ID
+                        fields: {
+                            'source': 'Website Footer',
+                            'language': currentLang || 'es'
+                        }
+                    })
+                });
+
+                if (response.ok) {
+                    // Success
+                    const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
+                    success.textContent = successMsg;
+                    success.style.display = 'block';
+                    form.reset();
+                    button.style.display = 'none';
+                    
+                    setTimeout(() => {
+                        success.style.display = 'none';
+                    }, 3000);
+                } else {
+                    throw new Error('Subscription failed');
+                }
+            } catch (error) {
+                // Error handling
+                const errorMsg = window.currentTranslations?.footer?.newsletter_error_server || 'Error al suscribirse. Inténtalo de nuevo.';
+                error.textContent = errorMsg;
+                error.style.display = 'block';
+                
+                // Reset button
+                button.textContent = originalButtonText;
+                button.disabled = false;
+                button.style.display = '';
             }
         });
     });

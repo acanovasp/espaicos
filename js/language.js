@@ -2,6 +2,10 @@
 let currentLang = 'es'; // Default language
 let translations = {};
 
+// Make current language and translations available globally
+window.currentLang = currentLang;
+window.currentTranslations = translations;
+
 // Load translations
 async function loadTranslations(lang) {
     try {
@@ -37,6 +41,9 @@ async function initTranslations() {
             "about": { "p1": "Un punto de encuentro en Calvià..." }
         };
     }
+    
+    // Update global reference
+    window.currentTranslations = translations;
 }
 
 // Update text content with animation
@@ -139,6 +146,7 @@ async function switchLanguage(lang) {
     }
     
     currentLang = lang;
+    window.currentLang = lang; // Update global reference
     
     // Update active state of language buttons
     document.querySelectorAll('.language-selector button').forEach(button => {

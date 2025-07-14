@@ -117,6 +117,7 @@
         "newsletter_placeholder": "Escriu el teu correu electrònic",
         "newsletter_button": "Subscriure's",
         "newsletter_error": "Si us plau, introdueix un correu electrònic vàlid.",
+        "newsletter_error_server": "Error en subscriure's. Torna-ho a provar.",
         "newsletter_success": "Gràcies per subscriure't!",
         "back_to_top": "Tornar a l'inici"
     },

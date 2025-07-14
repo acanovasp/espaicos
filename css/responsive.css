@@ -5,6 +5,7 @@
         overflow-x: hidden;
         max-width: 100%;
         box-sizing: border-box;
+        line-height: 100%;
     }
 
     /* Force all grid containers to respect viewport width */
@@ -295,7 +296,7 @@
     .contact-form button {
         grid-column: 1 / -1;
         grid-row: 10;
-        margin-top: var(--spacing-xs);
+        margin-top: var(--spacing-sm);
     }
     .is-left {
         margin-right: 0;
@@ -303,6 +304,10 @@
     
     .is-right {
         margin-left: 0;
+    }
+
+    .custom-radio-group {
+        gap: calc(var(--spacing-xs) - 1rem);
     }
 
     .footer {

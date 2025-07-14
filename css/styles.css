@@ -522,8 +522,8 @@ li {
 }
 
 .contact-form div:nth-child(8) {
-    grid-column: 1 / span 1;
-    grid-row: 5;
+    grid-column: 2 / span 1;
+    grid-row: 4;
 }
 
 .contact-form div:nth-child(9) {
@@ -532,7 +532,7 @@ li {
 }
 
 .contact-form button {
-    grid-column: 2 / span 1;
+    grid-column: 1 / -1;
     grid-row: 5;
 }
 
@@ -591,6 +591,11 @@ input, textarea {
     margin-top: 0.5rem;
 }
 
+input.error, textarea.error {
+    border-color: #d32f2f;
+    background-color: rgba(211, 47, 47, 0.1);
+}
+
 .btn {
     background-color: var(--brown-color);
     color: var(--beige-color);
@@ -612,7 +617,7 @@ input, textarea {
 .contact-form button {
     justify-self: center;
     align-self: flex-end;
-    margin-bottom: 8px;
+    margin-bottom: var(--spacing-sm);
 }
 
 .btn:hover {
