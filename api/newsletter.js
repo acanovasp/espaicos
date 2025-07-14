@@ -70,12 +70,24 @@ export default async function handler(req, res) {
 
         const responseData = await response.json();
 
-        // Debug logging - remove this after fixing
-        console.log('MailerLite Response Status:', response.status);
-        console.log('MailerLite Response Data:', JSON.stringify(responseData, null, 2));
-
         if (response.ok) {
-            // Success
+            // Check if this is a duplicate subscription
+            // MailerLite returns existing subscriber data for duplicates with 200 OK
+            if (responseData.data && responseData.data.created_at && responseData.data.updated_at) {
+                const createdAt = new Date(responseData.data.created_at);
+                const now = new Date();
+                const timeDiffSeconds = (now - createdAt) / 1000;
+                
+                // If subscriber was created more than 10 seconds ago, it's likely a duplicate
+                if (timeDiffSeconds > 10) {
+                    return res.status(409).json({ 
+                        success: false, 
+                        error: 'Email already subscribed' 
+                    });
+                }
+            }
+            
+            // New subscription (created within last 10 seconds)
             return res.status(200).json({ 
                 success: true,
                 message: 'Successfully subscribed to newsletter'
