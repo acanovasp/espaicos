@@ -105,6 +105,23 @@
         "other_questions": "Other inquiries",
         "submit": "Submit"
     },
+    "form": {
+        "step1": "Personal information",
+        "step2": "Select your plan",
+        "select_plan": "Select your plan",
+        "plan_2h": "2h/week",
+        "plan_2h30": "2.30h/week",
+        "plan_3h30": "3.30h/week",
+        "plan_4h": "4h/week",
+        "plan_4h30": "4.30h/week",
+        "plan_6h": "6h/week",
+        "plan_lab": "Creative LAB",
+        "lab_payment_info": "Creative LAB: also available per individual class at 20€",
+        "per_month": "/month",
+        "per_class": "/class",
+        "next": "Next",
+        "back": "Back"
+    },
     "footer": {
         "copyright": "© 2025, Espai Cos",
         "legal_notice": "Legal Notice",

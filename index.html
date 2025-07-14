@@ -334,11 +334,26 @@
     <!-- Form Section -->
     <section id="form-section" class="form-section  bottom-margin" data-bgcolor="var(--beige-color)">
         <h1 class="is-title" data-i18n="contact.title">Apúntate!</h1>
-        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mwpbjape" method="POST">
-            <div class="form-group is-left">
-                <label for="name" data-i18n="contact.name">Nombre</label>
-                <input type="text" id="name" name="name" required>
+        
+        <!-- Step Indicator -->
+        <div class="step-indicator">
+            <div class="step active" data-step="1">
+                <h3 class="step-number">1</h3>
+                <h3 class="step-label" data-i18n="form.step1">Información</h3>
             </div>
+            <div class="step" data-step="2">
+                <h3 class="step-number">2</h3>
+                <h3 class="step-label" data-i18n="form.step2">Plan</h3>
+            </div>
+        </div>
+
+        <form id="contact-form" class="contact-form" action="https://formspree.io/f/mwpbjape" method="POST">
+            <!-- Step 1: Contact Information -->
+            <div class="form-step" id="step-1" data-step="1">
+                <div class="form-group is-left">
+                    <label for="name" data-i18n="contact.name">Nombre</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
             <div class="form-group is-right">
                 <label for="surname" data-i18n="contact.surname">Apellidos</label>
                 <input type="text" id="surname" name="surname" required>
@@ -355,11 +370,11 @@
                 <label for="phone" data-i18n="contact.phone">Phone</label>
                 <input type="tel" id="phone" name="phone">
             </div>
-            <div class="form-group is-left">
+            <div class="form-group is-left no-margin-bottom">
                 <label data-i18n="contact.class_interest">En qué clase estás interesada?</label>
                 <div class="custom-radio-group">
                     <div class="radio-option">
-                        <input type="radio" id="schedule1" name="schedule" value="creative">
+                        <input type="radio" id="schedule1" name="schedule" value="creative" required>
                         <label for="schedule1" data-i18n="schedule.creative">Danza Creativa</label>
                     </div>
                     <div class="radio-option">
@@ -388,20 +403,122 @@
                     </div>
                 </div>
             </div>
-            <div class="other-questions-wrapper">
-                <div class="form-group is-right">
-                    <label for="experience" data-i18n="contact.experience">Experiencia con el movimiento (danza, teatro, yoga, deportes, etc)</label>
-                    <textarea id="experience" name="experience" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
-                </div>
-                <div class="is-right">
-                    <label for="message" data-i18n="contact.other_questions">Otras consultas</label>
-                    <textarea id="message" name="message" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                <div class="other-questions-wrapper">
+                    <div class="form-group is-right">
+                        <label for="experience" data-i18n="contact.experience">Experiencia con el movimiento (danza, teatro, yoga, deportes, etc)</label>
+                        <textarea id="experience" name="experience" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                    </div>
+                    <div class="is-right">
+                        <label for="message" data-i18n="contact.other_questions">Otras consultas</label>
+                        <textarea id="message" name="message" style="resize: none; overflow-y: hidden; padding-top: 4px;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                    </div>
                 </div>
             </div>
+
+            <!-- Step 2: Plan Selection -->
+            <div class="form-step" id="step-2" data-step="2" style="display: none;">
+                <div class="plan-selection">
+                    <label class="plan-title" data-i18n="form.select_plan">Selecciona tu plan</label>
+                    <div class="plan-options">
+                        <div class="plan-option">
+                            <input type="radio" id="plan-2h" name="plan" value="2h" data-price="65">
+                            <label for="plan-2h" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_2h">2h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">65€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="plan-option">
+                            <input type="radio" id="plan-2h30" name="plan" value="2h30" data-price="75">
+                            <label for="plan-2h30" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_2h30">2.30h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">75€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="plan-option">
+                            <input type="radio" id="plan-3h30" name="plan" value="3h30" data-price="90">
+                            <label for="plan-3h30" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_3h30">3.30h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">90€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="plan-option">
+                            <input type="radio" id="plan-4h" name="plan" value="4h" data-price="100">
+                            <label for="plan-4h" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_4h">4h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">100€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="plan-option">
+                            <input type="radio" id="plan-4h30" name="plan" value="4h30" data-price="110">
+                            <label for="plan-4h30" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_4h30">4.30h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">110€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="plan-option">
+                            <input type="radio" id="plan-6h" name="plan" value="6h" data-price="120">
+                            <label for="plan-6h" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_6h">6h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">120€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="plan-option">
+                            <input type="radio" id="plan-lab" name="plan" value="lab" data-price="50">
+                            <label for="plan-lab" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_lab">LAB Creativo</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-monthly">50€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
+                                    </div>
+                                </div>
+                            </label>
+                            <h3 data-i18n="form.lab_payment_info">LAB Creativo: también disponible por clases sueltas a 20€</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Navigation -->
+            <div class="form-navigation">
+                <button type="button" id="prev-step" class="btn btn-secondary" style="display: none;" data-i18n="form.back">Atrás</button>
+                <button type="button" id="next-step" class="btn btn-primary" data-i18n="form.next">Siguiente</button>
+                <button type="submit" id="submit-form" class="btn btn-primary" style="display: none;" data-i18n="contact.submit">Enviar</button>
+            </div>
+
             <!-- Formspree anti-spam and configuration -->
             <input type="hidden" name="_subject" value="Nueva inscripción - Espai Cos">
             <input type="hidden" name="_captcha" value="false">
-            <button type="submit" class="btn btn-primary is-right" data-i18n="contact.submit">Enviar</button>
         </form>
         </div>
     </section>

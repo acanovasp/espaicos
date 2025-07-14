@@ -105,6 +105,23 @@
         "other_questions": "Altres consultes",
         "submit": "Enviar"
     },
+    "form": {
+        "step1": "Informació personal",
+        "step2": "Selecciona el teu pla",
+        "select_plan": "Selecciona el teu pla",
+        "plan_2h": "2h/setmana",
+        "plan_2h30": "2.30h/setmana",
+        "plan_3h30": "3.30h/setmana",
+        "plan_4h": "4h/setmana",
+        "plan_4h30": "4.30h/setmana",
+        "plan_6h": "6h/setmana",
+        "plan_lab": "LAB Creatiu",
+        "lab_payment_info": "LAB Creatiu: també disponible per classes soltes a 20€",
+        "per_month": "/mes",
+        "per_class": "/classe",
+        "next": "Següent",
+        "back": "Enrere"
+    },
     "footer": {
         "copyright": "© 2025, Espai Cos",
         "legal_notice": "Avís legal",

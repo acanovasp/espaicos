@@ -5,6 +5,8 @@ class FormValidator {
         this.form = formElement;
         this.originalButtonText = '';
         this.validationTimers = new Map(); // Store timers for debounced validation
+        this.currentStep = 1;
+        this.maxStep = 2;
         this.init();
     }
 
@@ -17,9 +19,10 @@ class FormValidator {
         
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
         this.setupInputValidation();
+        this.setupStepNavigation();
     }
 
-    setupInputValidation() {
+        setupInputValidation() {
         const inputs = this.form.querySelectorAll('input, textarea, select');
         inputs.forEach(input => {
             // Always validate immediately on blur (when user leaves the field)
@@ -28,11 +31,138 @@ class FormValidator {
             // For phone and email fields, use debounced validation on input
             if (input.type === 'tel' || input.type === 'email') {
                 input.addEventListener('input', () => this.validateFieldDebounced(input, 1500)); // 1.5 second delay
+            } else if (input.type === 'radio') {
+                // For radio buttons, clear errors when selection changes
+                input.addEventListener('change', () => this.clearRadioGroupError(input.name));
             } else {
                 // For other fields, validate immediately on input
                 input.addEventListener('input', () => this.validateField(input));
             }
         });
+    }
+
+    setupStepNavigation() {
+        const nextButton = document.getElementById('next-step');
+        const prevButton = document.getElementById('prev-step');
+        
+        if (nextButton) {
+            nextButton.addEventListener('click', () => this.nextStep());
+        }
+        
+        if (prevButton) {
+            prevButton.addEventListener('click', () => this.prevStep());
+        }
+    }
+
+    nextStep() {
+        // Validate current step before proceeding
+        if (!this.validateCurrentStep()) {
+            return;
+        }
+
+        if (this.currentStep < this.maxStep) {
+            this.currentStep++;
+            this.showStep(this.currentStep);
+        }
+    }
+
+    prevStep() {
+        if (this.currentStep > 1) {
+            this.currentStep--;
+            this.showStep(this.currentStep);
+        }
+    }
+
+    showStep(stepNumber) {
+        // Hide all steps
+        const steps = this.form.querySelectorAll('.form-step');
+        steps.forEach(step => {
+            step.style.display = 'none';
+        });
+
+        // Show current step
+        const currentStepElement = document.getElementById(`step-${stepNumber}`);
+        if (currentStepElement) {
+            currentStepElement.style.display = 'grid';
+        }
+
+        // Update step indicator
+        const stepIndicators = document.querySelectorAll('.step');
+        stepIndicators.forEach((indicator, index) => {
+            const stepIndex = index + 1;
+            
+            // Remove all classes first
+            indicator.classList.remove('active', 'completed');
+            
+            if (stepIndex === stepNumber) {
+                // Current step
+                indicator.classList.add('active');
+            } else if (stepIndex < stepNumber) {
+                // Completed steps
+                indicator.classList.add('completed');
+            }
+            // Future steps get no class (default opacity)
+        });
+
+        // Update navigation buttons
+        this.updateNavigationButtons();
+    }
+
+    updateNavigationButtons() {
+        const nextButton = document.getElementById('next-step');
+        const prevButton = document.getElementById('prev-step');
+        const submitButton = document.getElementById('submit-form');
+
+        if (this.currentStep === 1) {
+            // First step: show Next button, hide Back and Submit
+            if (nextButton) nextButton.style.display = 'block';
+            if (prevButton) prevButton.style.display = 'none';
+            if (submitButton) submitButton.style.display = 'none';
+        } else if (this.currentStep === this.maxStep) {
+            // Last step: show Submit and Back buttons, hide Next
+            if (nextButton) nextButton.style.display = 'none';
+            if (prevButton) prevButton.style.display = 'block';
+            if (submitButton) submitButton.style.display = 'block';
+        } else {
+            // Middle steps: show Next and Back buttons, hide Submit
+            if (nextButton) nextButton.style.display = 'block';
+            if (prevButton) prevButton.style.display = 'block';
+            if (submitButton) submitButton.style.display = 'none';
+        }
+    }
+
+    validateCurrentStep() {
+        const currentStepElement = document.getElementById(`step-${this.currentStep}`);
+        if (!currentStepElement) return true;
+
+        const inputs = currentStepElement.querySelectorAll('input, textarea, select');
+        let isValid = true;
+        const radioGroups = new Set();
+
+        inputs.forEach(input => {
+            // Handle radio buttons separately by group
+            if (input.type === 'radio') {
+                radioGroups.add(input.name);
+            } else {
+                // Validate other input types normally
+                if (!this.validateField(input)) {
+                    isValid = false;
+                }
+            }
+        });
+
+        // Validate radio button groups
+        radioGroups.forEach(groupName => {
+            if (!this.validateRadioGroup(currentStepElement, groupName)) {
+                isValid = false;
+            }
+        });
+
+        if (!isValid) {
+            this.showError('Please correct the errors above before continuing.');
+        }
+
+        return isValid;
     }
 
     validateFieldDebounced(field, delay = 1500) {
@@ -57,6 +187,56 @@ class FormValidator {
         }, delay);
         
         this.validationTimers.set(field, timer);
+    }
+
+    validateRadioGroup(container, groupName) {
+        const radioButtons = container.querySelectorAll(`input[type="radio"][name="${groupName}"]`);
+        const isGroupRequired = Array.from(radioButtons).some(radio => radio.hasAttribute('required'));
+        
+        if (!isGroupRequired) return true;
+        
+        const isSelected = Array.from(radioButtons).some(radio => radio.checked);
+        
+        // Find the radio group container for error display
+        const firstRadio = radioButtons[0];
+        const radioGroupContainer = firstRadio.closest('.custom-radio-group');
+        
+        // Remove existing error styling
+        if (radioGroupContainer) {
+            radioGroupContainer.classList.remove('error');
+            const existingError = radioGroupContainer.querySelector('.field-error');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+        
+        if (!isSelected) {
+            // Add error styling to the radio group
+            if (radioGroupContainer) {
+                radioGroupContainer.classList.add('error');
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'field-error';
+                errorDiv.textContent = 'Please select an option';
+                radioGroupContainer.appendChild(errorDiv);
+            }
+            return false;
+        }
+        
+        return true;
+    }
+
+    clearRadioGroupError(groupName) {
+        const radioGroup = this.form.querySelector(`input[type="radio"][name="${groupName}"]`);
+        if (radioGroup) {
+            const radioGroupContainer = radioGroup.closest('.custom-radio-group');
+            if (radioGroupContainer) {
+                radioGroupContainer.classList.remove('error');
+                const existingError = radioGroupContainer.querySelector('.field-error');
+                if (existingError) {
+                    existingError.remove();
+                }
+            }
+        }
     }
 
     validateField(field) {
@@ -112,7 +292,7 @@ class FormValidator {
             field.classList.add('error');
             const errorElement = document.createElement('span');
             errorElement.className = 'field-error';
-            errorElement.textContent = errorMessage;
+                errorElement.textContent = errorMessage;
             errorElement.style.color = 'var(--brown-color)';
             errorElement.style.fontSize = '0.8rem';
             errorElement.style.marginTop = '0.25rem';
@@ -121,7 +301,7 @@ class FormValidator {
         }
     }
 
-    async handleSubmit(e) {
+        async handleSubmit(e) {
         e.preventDefault(); // Always prevent default to handle with AJAX
         
         // Clear any pending validation timers
@@ -131,17 +311,29 @@ class FormValidator {
         // Clear any existing success/error messages
         this.clearMessages();
         
-        const inputs = this.form.querySelectorAll('input, textarea, select');
+        // Validate all steps
         let isValid = true;
-
-        inputs.forEach(input => {
-            if (!this.validateField(input)) {
+        for (let step = 1; step <= this.maxStep; step++) {
+            const currentStep = this.currentStep;
+            this.currentStep = step;
+            if (!this.validateCurrentStep()) {
                 isValid = false;
+                // Go back to the first invalid step
+                this.showStep(step);
+                break;
             }
-        });
+            this.currentStep = currentStep;
+        }
+
+        // Check if a plan is selected
+        const selectedPlan = this.form.querySelector('input[name="plan"]:checked');
+        if (!selectedPlan) {
+            isValid = false;
+            this.showError('Please select a plan before submitting.');
+            this.showStep(2); // Go to plan selection step
+        }
 
         if (!isValid) {
-            this.showError('Please correct the errors above before submitting.');
             return;
         }
 
@@ -175,8 +367,8 @@ class FormValidator {
         existingMessages.forEach(msg => msg.remove());
     }
 
-    showLoading() {
-        const submitButton = this.form.querySelector('button[type="submit"]');
+        showLoading() {
+        const submitButton = document.getElementById('submit-form');
         if (submitButton) {
             submitButton.disabled = true;
             
@@ -192,7 +384,7 @@ class FormValidator {
     }
 
     showSuccess() {
-        const submitButton = this.form.querySelector('button[type="submit"]');
+        const submitButton = document.getElementById('submit-form');
         if (submitButton) {
             // Get success text based on current language or fallback
             const successTexts = {
@@ -203,19 +395,19 @@ class FormValidator {
             const currentLang = window.currentLang || 'es';
             submitButton.textContent = successTexts[currentLang] || successTexts['es'];
             submitButton.style.backgroundColor = 'var(--green-color)';
-            submitButton.style.borderColor = 'var(--green-color)';
+            submitButton.style.borderColor = 'var(--brown-color)';
             submitButton.style.color = 'var(--brown-color)';
         }
 
         // Reset form after a delay
         setTimeout(() => {
             this.form.reset();
-            this.resetButton();
+            this.resetForm();
         }, 3000);
     }
 
     resetButton() {
-        const submitButton = this.form.querySelector('button[type="submit"]');
+        const submitButton = document.getElementById('submit-form');
         if (submitButton) {
             submitButton.disabled = false;
             
@@ -232,6 +424,16 @@ class FormValidator {
             submitButton.style.borderColor = '';
             submitButton.style.color = '';
         }
+    }
+
+    resetForm() {
+        // Reset to first step
+        this.currentStep = 1;
+        this.showStep(1);
+        this.resetButton();
+        
+        // Clear any error messages
+        this.clearMessages();
     }
 
     showError(message) {

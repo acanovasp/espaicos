@@ -105,6 +105,23 @@
         "other_questions": "Otras consultas",
         "submit": "Enviar"
     },
+    "form": {
+        "step1": "Información personal",
+        "step2": "Selecciona tu plan",
+        "select_plan": "Selecciona tu plan",
+        "plan_2h": "2h/semana",
+        "plan_2h30": "2h.30h/semana",
+        "plan_3h30": "3.30h/semana",
+        "plan_4h": "4h/semana",
+        "plan_4h30": "4.30h/semana",
+        "plan_6h": "6h/semana",
+        "plan_lab": "LAB Creativo",
+        "lab_payment_info": "LAB Creativo: también disponible por clases sueltas a 20€",
+        "per_month": "/mes",
+        "per_class": "/clase",
+        "next": "Siguiente",
+        "back": "Atrás"
+    },
     "footer": {
         "copyright": "© 2025, Espai Cos",
         "legal_notice": "Aviso legal",

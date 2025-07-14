@@ -1,4 +1,11 @@
 /* Large devices (desktops, less than 1200px) */
+@media (max-width: 1200px) {
+    .plan-options {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* Medium devices (tablets, less than 768px) */
 @media (max-width: 768px) {
 
     html, body {
@@ -38,7 +45,7 @@
         font-size: 1.75rem;
     }
 
-    h2, p, label, .btn-primary {
+    h2, p, label, .btn-primary, .btn-secondary {
         font-size: 1rem;
         line-height: 120%;
     }
@@ -248,47 +255,47 @@
         margin-bottom: var(--spacing-xs);
     }
 
-    .contact-form div:nth-child(1) {
+    #step-1 div:nth-child(1) {
         grid-column: 1 / -1;
         grid-row: 1;
     }
     
-    .contact-form div:nth-child(2) {
+    #step-1 div:nth-child(2) {
         grid-column: 1 / -1;
         grid-row: 2;
     }
     
-    .contact-form div:nth-child(3) {
+    #step-1 div:nth-child(3) {
         grid-column: 1 / -1;
         grid-row: 3;
     }
     
-    .contact-form div:nth-child(4) {
+    #step-1 div:nth-child(4) {
         grid-column: 1 / -1;
         grid-row: 4;
     }
     
-    .contact-form div:nth-child(5) {
+    #step-1 div:nth-child(5) {
         grid-column: 1 / -1;
         grid-row: 5;
     }
     
-    .contact-form div:nth-child(6) {
+    #step-1 div:nth-child(6) {
         grid-column: 1 / -1;
         grid-row: 6;
     }
     
-    .contact-form div:nth-child(7) {
+    #step-1 div:nth-child(7) {
         grid-column: 1 / -1;
         grid-row: 7;
     }
     
-    .contact-form div:nth-child(8) {
+    #step-1 div:nth-child(8) {
         grid-column: 1 / -1;
         grid-row: 8;
     }
     
-    .contact-form div:nth-child(9) {
+    #step-1 div:nth-child(9) {
         grid-column: 1 / -1;
         grid-row: 9;
     }
@@ -296,8 +303,47 @@
     .contact-form button {
         grid-column: 1 / -1;
         grid-row: 10;
-        margin-top: var(--spacing-sm);
     }
+    
+    /* 2-Step Form Responsive */
+    .step-indicator {
+        grid-column: 1 / -1;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .step {
+        flex-direction: row;
+        padding: 0.5rem;
+        gap: calc(var(--spacing-xs) - 0.4rem);
+    }
+    
+    .step-label {
+        font-size: 0.75rem;
+    }
+    
+    .form-step {
+        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: var(--spacing-xs);
+    }
+    
+    .plan-options {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xs);
+        max-width: 100%;
+    }
+    
+    .form-navigation {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .form-navigation button {
+        width: 100%;
+    }
+    
     .is-left {
         margin-right: 0;
     }
