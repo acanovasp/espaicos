@@ -343,41 +343,46 @@ document.addEventListener('DOMContentLoaded', () => {
             success.style.display = 'none';
 
             try {
-                // Submit to MailerLite
-                const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+                // Submit to our secure API endpoint
+                const response = await fetch('/api/newsletter', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiYjVkYzZhOTVhZDg0NWQwMTQ3MWVhODYwMzQ0NTEyNzg0MTAxOTgxNWJhODI4ODQ1ODE5MjIwNjZmNDhkNGI3MmE1ZmMwY2MwOGU2OTk4MmYiLCJpYXQiOjE3NTE5MDcyNzUuMTI1ODM5LCJuYmYiOjE3NTE5MDcyNzUuMTI1ODQxLCJleHAiOjQ5MDc1ODA4NzUuMTIyNjEsInN1YiI6IjE2NjExMzciLCJzY29wZXMiOltdfQ.Nf4-4-gWhopk2P_f-57YRlxnqXOBhAGDUtU02w1sJOu16uIEwNbdMo09Ndx8u0Ixv0mWzFbzfQlpfM1sCdbN1pPe2iDk4sPNwN_IxB9lbiKNVd9U6KCSSH3X0Bibn4bcYgPnQOKKMtLhIsJMvKITGX3-R0XS7OFu7r4tSA5_TyYzTTyvWimuRQofDLicSDNo_REGZ9Te_adfKfZCNu2uSGmEqjyaGwBvLi8ib6ZYbGTR7nGAzJ7dMxHqgrO3jejbJMTd6xu5ykxRLDMsiLWiy00WTNUfz9s9e8OiDmQisQXJHIR36FsWNLS7Xcndj02JCnW_y6zDa1sKUzONjPmyMZA4VDHXIca6Qce7z235w0qSNReMl023a0v9XFmxewdK7VhN0F3gkgyrbgB1SSIBVChfW5fDu0eLjJlh0grUv5Wk8HqBsN6hV3u6tjMJo6vyFqKsZyM78Asyk8MrKlULOweL0Yx_zaGvA2c8nTyoy4iITrng7vXXyjtxn05uT4KS4LGsvEu5hsOivNDAbBF325uldZlj_P9qk18KqkEC4ydqfCF64cMpcOxPq_EZhkUk52i5nPheuhV0O4AxBw6NYk0sL5NFtn4kWpR_kCAAzIm9zycMcWJksvbCUdvo7y6FRruEuCYd8Pxr2IfNDSGExPC7QzqPUUUYigivjq5iWzg', // Replace with your actual API key
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         email: input.value.trim(),
-                        groups: ['159286458087114300'], // Replace with your group ID
-                        fields: {
-                            'source': 'Website Footer',
-                            'language': currentLang || 'es'
-                        }
+                        language: currentLang || 'es'
                     })
                 });
 
-                if (response.ok) {
+                const responseData = await response.json();
+                
+                if (response.ok && responseData.success) {
                     // Success
-                const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
-                success.textContent = successMsg;
-                success.style.display = 'block';
-                form.reset();
-                button.style.display = 'none';
-                    
-                setTimeout(() => {
-                    success.style.display = 'none';
+                    const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
+                    success.textContent = successMsg;
+                    success.style.display = 'block';
+                    form.reset();
+                    button.style.display = 'none';
+                        
+                    setTimeout(() => {
+                        success.style.display = 'none';
                     }, 3000);
                 } else {
-                    throw new Error('Subscription failed');
+                    // Handle specific error messages from our API
+                    let errorMessage;
+                    if (response.status === 409) {
+                        // Email already subscribed
+                        errorMessage = window.currentTranslations?.footer?.newsletter_error_duplicate || 'Ya estás suscrito a nuestro newsletter.';
+                    } else {
+                        // General error
+                        errorMessage = responseData.error || 'Error al suscribirse. Inténtalo de nuevo.';
+                    }
+                    throw new Error(errorMessage);
                 }
             } catch (error) {
                 // Error handling
-                const errorMsg = window.currentTranslations?.footer?.newsletter_error_server || 'Error al suscribirse. Inténtalo de nuevo.';
+                const errorMsg = error.message || window.currentTranslations?.footer?.newsletter_error_server || 'Error al suscribirse. Inténtalo de nuevo.';
                 error.textContent = errorMsg;
                 error.style.display = 'block';
                 

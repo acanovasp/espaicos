@@ -135,6 +135,7 @@
         "newsletter_button": "Suscribirte",
         "newsletter_error": "Por favor, introduce un email válido.",
         "newsletter_error_server": "Error al suscribirse. Inténtalo de nuevo.",
+        "newsletter_error_duplicate": "Ya estás suscrito a nuestro newsletter.",
         "newsletter_success": "¡Gracias por suscribirte!",
         "back_to_top": "Volver al inicio"
     },
