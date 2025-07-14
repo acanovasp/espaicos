@@ -70,6 +70,10 @@ export default async function handler(req, res) {
 
         const responseData = await response.json();
 
+        // Debug logging - remove this after fixing
+        console.log('MailerLite Response Status:', response.status);
+        console.log('MailerLite Response Data:', JSON.stringify(responseData, null, 2));
+
         if (response.ok) {
             // Success
             return res.status(200).json({ 
