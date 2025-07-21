@@ -27,8 +27,8 @@ function showCheckoutSuccess() {
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background: var(--green-color, #4CAF50);
-        color: var(--brown-color: #82381A);
+        background: #B0FFD1;
+        color: #82381A;
         padding: 15px 25px;
         border-radius: 0px;
         z-index: 10000;
@@ -68,8 +68,8 @@ function showCheckoutCancelled() {
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background: var(--brown-color, #8B4513);
-        color: var(--beige-color: #F7F7D2);
+        background: #82381A;
+        color: #F7F7D2;
         padding: 15px 25px;
         z-index: 10000;
         font-weight: 500;
