@@ -28,21 +28,19 @@ function showCheckoutSuccess() {
         left: 50%;
         transform: translateX(-50%);
         background: var(--green-color, #4CAF50);
-        color: white;
+        color: var(--brown-color: #82381A;);
         padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 0px;
         z-index: 10000;
-        font-weight: 500;
         max-width: 90%;
         text-align: center;
     `;
 
     // Get success text based on current language
     const successTexts = {
-        'es': '¡Pago exitoso! Pronto recibirás un correo de confirmación.',
-        'ca': 'Pagament exitós! Aviat rebràs un correu de confirmació.',
-        'en': 'Payment successful! You will receive a confirmation email soon.'
+        'es': '¡Bienvenido a EspaiCos! Tu suscripción está activa. Te enviaremos los detalles por correo.',
+        'ca': 'Benvingut a EspaiCos! La teva subscripció està activa. T\'enviarem els detalls per correu.',
+        'en': 'Welcome to EspaiCos! Your subscription is active. We\'ll email you the details.'
     };
     const currentLang = window.currentLang || 'es';
     successMessage.textContent = successTexts[currentLang] || successTexts['es'];
@@ -71,10 +69,8 @@ function showCheckoutCancelled() {
         left: 50%;
         transform: translateX(-50%);
         background: var(--brown-color, #8B4513);
-        color: white;
+        color: var(--beige-color: #F7F7D2;);
         padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         z-index: 10000;
         font-weight: 500;
         max-width: 90%;
@@ -83,9 +79,9 @@ function showCheckoutCancelled() {
 
     // Get cancellation text based on current language
     const cancelTexts = {
-        'es': 'Pago cancelado. Puedes intentar de nuevo cuando gustes.',
-        'ca': 'Pagament cancel·lat. Pots intentar-ho de nou quan vulguis.',
-        'en': 'Payment cancelled. You can try again whenever you like.'
+        'es': 'No hay problema. Tu información está guardada y puedes completar la suscripción cuando quieras.',
+        'ca': 'No hi ha problema. La teva informació està guardada i pots completar la subscripció quan vulguis.',
+        'en': 'No problem. Your information is saved and you can complete your subscription anytime.'
     };
     const currentLang = window.currentLang || 'es';
     cancelMessage.textContent = cancelTexts[currentLang] || cancelTexts['es'];
