@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { priceId, customerEmail, customerName, customerPhone, classInterest, language } = req.body;
+        const { priceId, customerEmail, customerName, customerPhone, classInterest } = req.body;
 
         // Validate required fields
         if (!priceId) {
@@ -47,20 +47,9 @@ export default async function handler(req, res) {
             ? `https://${process.env.VERCEL_URL}` 
             : 'http://localhost:3000';
 
-        // Map language to Stripe locale
-        const localeMap = {
-            'es': 'es',
-            'ca': 'es', // Catalan uses Spanish locale in Stripe
-            'en': 'en'
-        };
-        const locale = localeMap[language] || 'es';
-
-        // Create Stripe checkout session with enhanced branding
+        // Create Stripe checkout session
         const session = await stripe.checkout.sessions.create({
-            billing_address_collection: 'required',
-            phone_number_collection: {
-                enabled: true,
-            },
+            billing_address_collection: 'auto',
             line_items: [
                 {
                     price: priceId,
@@ -68,33 +57,20 @@ export default async function handler(req, res) {
                 },
             ],
             mode: 'subscription',
-            locale: locale,
             success_url: `${domain}/?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${domain}/?checkout=cancelled`,
             customer_email: customerEmail,
-            customer_creation: 'always',
             metadata: {
                 customerName: customerName || '',
                 customerPhone: customerPhone || '',
-                classInterest: classInterest || '',
-                signupSource: 'website_form',
-                originalLanguage: language || 'es'
+                classInterest: classInterest || ''
             },
             subscription_data: {
                 billing_mode: { type: 'flexible' },
                 metadata: {
                     customerName: customerName || '',
                     customerPhone: customerPhone || '',
-                    classInterest: classInterest || '',
-                    signupSource: 'website_form',
-                    originalLanguage: language || 'es'
-                }
-            },
-            custom_text: {
-                submit: {
-                    message: language === 'en' ? 'Complete your EspaiCos subscription' : 
-                            language === 'ca' ? 'Completa la teva subscripció a EspaiCos' :
-                            'Completa tu suscripción a EspaiCos'
+                    classInterest: classInterest || ''
                 }
             }
         });

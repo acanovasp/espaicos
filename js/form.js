@@ -377,8 +377,7 @@ class FormValidator {
             customerEmail: formData.get('email'),
             customerName: formData.get('name'),
             customerPhone: formData.get('phone'),
-            classInterest: formData.get('class_interest'),
-            language: window.currentLang || 'es'
+            classInterest: formData.get('class_interest')
         };
 
         // Call our API to create checkout session

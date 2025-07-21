@@ -38,9 +38,9 @@ function showCheckoutSuccess() {
 
     // Get success text based on current language
     const successTexts = {
-        'es': '¡Bienvenido a EspaiCos! Tu suscripción está activa. Te enviaremos los detalles por correo.',
-        'ca': 'Benvingut a EspaiCos! La teva subscripció està activa. T\'enviarem els detalls per correu.',
-        'en': 'Welcome to EspaiCos! Your subscription is active. We\'ll email you the details.'
+        'es': '¡Pago exitoso! Pronto recibirás un correo de confirmación.',
+        'ca': 'Pagament exitós! Aviat rebràs un correu de confirmació.',
+        'en': 'Payment successful! You will receive a confirmation email soon.'
     };
     const currentLang = window.currentLang || 'es';
     successMessage.textContent = successTexts[currentLang] || successTexts['es'];
@@ -79,9 +79,9 @@ function showCheckoutCancelled() {
 
     // Get cancellation text based on current language
     const cancelTexts = {
-        'es': 'Pago cancelado. Tu información está guardada y puedes completar la suscripción cuando quieras.',
-        'ca': 'Pagament cancel·lat. La teva informació està guardada i pots completar la subscripció quan vulguis.',
-        'en': 'Payment canceled. Your information is saved and you can complete your subscription anytime.'
+        'es': 'Pago cancelado. Puedes intentarlo de nuevo cuando quieras.',
+        'ca': 'Pagament cancel·lat. Pots intentar-ho de nou quan vulguis.',
+        'en': 'Payment cancelled. You can try again whenever you like.'
     };
     const currentLang = window.currentLang || 'es';
     cancelMessage.textContent = cancelTexts[currentLang] || cancelTexts['es'];
