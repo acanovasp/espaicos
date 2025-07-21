@@ -422,17 +422,15 @@
                     <div class="plan-options">
                         <div class="plan-option">
                             <input type="radio" id="plan-2h" name="plan" value="2h" data-price="65">
-                            <a href="https://buy.stripe.com/test_9B67sL2434L42pR2TR87K00" target="_blank" rel="noopener noreferrer" class="plan-card" style="text-decoration: none;">
-                                <label for="plan-2h" style="cursor:pointer;display:block;margin:0;">
-                                    <div class="plan-header">
-                                        <p data-i18n="form.plan_2h">2h/semana</p>
-                                        <div class="plan-pricing">
-                                            <p class="plan-price">65€</p>
-                                            <p class="plan-period" data-i18n="form.per_month">/mes</p>
-                                        </div>
+                            <label for="plan-2h" class="plan-card">
+                                <div class="plan-header">
+                                    <p data-i18n="form.plan_2h">2h/semana</p>
+                                    <div class="plan-pricing">
+                                        <p class="plan-price">65€</p>
+                                        <p class="plan-period" data-i18n="form.per_month">/mes</p>
                                     </div>
-                                </label>
-                            </a>
+                                </div>
+                            </label>
                         </div>
                         <div class="plan-option">
                             <input type="radio" id="plan-2h30" name="plan" value="2h30" data-price="75">
@@ -571,6 +569,8 @@
     <!-- Scripts -->
     <script src="./js/language.js"></script>
     <script src="./js/main.js"></script>
+    <script src="./js/stripe-config.js"></script>
+    <script src="./js/checkout-handler.js"></script>
     <script src="./js/form.js"></script>
 </body>
 </html> 

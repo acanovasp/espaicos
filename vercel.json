@@ -2,6 +2,9 @@
   "functions": {
     "api/newsletter.js": {
       "maxDuration": 10
+    },
+    "api/create-checkout-session.js": {
+      "maxDuration": 10
     }
   },
   "headers": [

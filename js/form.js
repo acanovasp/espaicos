@@ -341,22 +341,10 @@ class FormValidator {
         this.showLoading();
 
         try {
-            // Submit to Formspree via AJAX
-            const formData = new FormData(this.form);
-            const response = await fetch(this.form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-
-            if (response.ok) {
-                this.showSuccess();
-            } else {
-                throw new Error('Form submission failed');
-            }
+            // Create Stripe checkout session
+            await this.createStripeCheckout(selectedPlan);
         } catch (error) {
+            console.error('Stripe checkout error:', error);
             this.showError('An error occurred. Please try again.');
             this.resetButton();
         }
@@ -365,6 +353,50 @@ class FormValidator {
     clearMessages() {
         const existingMessages = this.form.querySelectorAll('.form-message');
         existingMessages.forEach(msg => msg.remove());
+    }
+
+    async createStripeCheckout(selectedPlan) {
+        // Get form data
+        const formData = new FormData(this.form);
+        const planValue = selectedPlan.value;
+        
+        // Check if Stripe config is available
+        if (!window.STRIPE_CONFIG || !window.STRIPE_CONFIG.priceIds) {
+            throw new Error('Stripe configuration not found');
+        }
+
+        // Get the Stripe price ID for the selected plan
+        const priceId = window.STRIPE_CONFIG.priceIds[planValue];
+        if (!priceId || priceId.includes('REPLACE_WITH')) {
+            throw new Error('Stripe price ID not configured for this plan');
+        }
+
+        // Prepare checkout data
+        const checkoutData = {
+            priceId: priceId,
+            customerEmail: formData.get('email'),
+            customerName: formData.get('name'),
+            customerPhone: formData.get('phone'),
+            classInterest: formData.get('class_interest')
+        };
+
+        // Call our API to create checkout session
+        const response = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(checkoutData)
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Failed to create checkout session');
+        }
+
+        // Redirect to Stripe checkout
+        window.location.href = result.url;
     }
 
         showLoading() {

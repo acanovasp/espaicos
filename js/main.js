@@ -359,14 +359,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if (response.ok && responseData.success) {
                     // Success
-                    const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
-                    success.textContent = successMsg;
-                    success.style.display = 'block';
-                    form.reset();
-                    button.style.display = 'none';
+                const successMsg = window.currentTranslations?.footer?.newsletter_success || '¡Gracias por suscribirte!';
+                success.textContent = successMsg;
+                success.style.display = 'block';
+                form.reset();
+                button.style.display = 'none';
                         
-                    setTimeout(() => {
-                        success.style.display = 'none';
+                setTimeout(() => {
+                    success.style.display = 'none';
                     }, 3000);
                 } else {
                     // Handle specific error messages from our API
