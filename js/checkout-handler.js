@@ -79,9 +79,9 @@ function showCheckoutCancelled() {
 
     // Get cancellation text based on current language
     const cancelTexts = {
-        'es': 'No hay problema. Tu información está guardada y puedes completar la suscripción cuando quieras.',
-        'ca': 'No hi ha problema. La teva informació està guardada i pots completar la subscripció quan vulguis.',
-        'en': 'No problem. Your information is saved and you can complete your subscription anytime.'
+        'es': 'Pago cancelado. Tu información está guardada y puedes completar la suscripción cuando quieras.',
+        'ca': 'Pagament cancel·lat. La teva informació està guardada i pots completar la subscripció quan vulguis.',
+        'en': 'Payment canceled. Your information is saved and you can complete your subscription anytime.'
     };
     const currentLang = window.currentLang || 'es';
     cancelMessage.textContent = cancelTexts[currentLang] || cancelTexts['es'];
