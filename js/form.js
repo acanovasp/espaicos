@@ -350,7 +350,10 @@ class FormValidator {
             for (let [key, value] of formData.entries()) {
                 formObject[key] = value;
             }
+            console.log('=== Storing form data in localStorage ===');
+            console.log('Form object to store:', formObject);
             localStorage.setItem('espaiCosFormData', JSON.stringify(formObject));
+            console.log('✅ Form data stored in localStorage');
 
             // Check if running locally (for development)
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {

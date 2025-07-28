@@ -7,20 +7,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const checkoutStatus = urlParams.get('checkout');
     const sessionId = urlParams.get('session_id');
 
+    console.log('Checkout handler loaded');
+    console.log('URL params:', { checkoutStatus, sessionId });
+    console.log('Current URL:', window.location.href);
+    console.log('Stored form data:', localStorage.getItem('espaiCosFormData'));
+
     if (checkoutStatus === 'success' && sessionId) {
+        console.log('Success flow triggered');
         showCheckoutSuccess();
         // Clean up URL
         cleanupUrl();
     } else if (checkoutStatus === 'cancelled') {
+        console.log('Cancellation flow triggered');
         showCheckoutCancelled();
         // Clean up URL
         cleanupUrl();
+    } else {
+        console.log('No checkout status detected');
     }
 });
 
 function showCheckoutSuccess() {
     // Submit stored form data to Formspree
     submitStoredFormData();
+
+    // Wait for language system to be ready
+    const currentLang = window.currentLang || 'es';
+    console.log('Current language for success message:', currentLang);
 
     // Create success message
     const successMessage = document.createElement('div');
@@ -47,7 +60,6 @@ function showCheckoutSuccess() {
         'ca': 'Pagament exitós! Aviat rebràs un correu de confirmació.',
         'en': 'Payment successful! You will receive a confirmation email soon.'
     };
-    const currentLang = window.currentLang || 'es';
     successMessage.textContent = successTexts[currentLang] || successTexts['es'];
 
     // Add to page
@@ -118,22 +130,29 @@ function cleanupUrl() {
 
 // Submit stored form data to Formspree after successful payment
 async function submitStoredFormData() {
+    console.log('=== Starting submitStoredFormData ===');
     try {
         // Get stored form data
         const storedData = localStorage.getItem('espaiCosFormData');
+        console.log('Raw stored data:', storedData);
+        
         if (!storedData) {
             console.log('No stored form data found');
             return;
         }
 
         const formData = JSON.parse(storedData);
+        console.log('Parsed form data:', formData);
         
         // Create FormData object for submission
         const submitData = new FormData();
         for (const [key, value] of Object.entries(formData)) {
+            console.log(`Adding to FormData: ${key} = ${value}`);
             submitData.append(key, value);
         }
 
+        console.log('About to submit to Formspree...');
+        
         // Submit to Formspree
         const response = await fetch('https://formspree.io/f/mwpbjape', {
             method: 'POST',
@@ -143,14 +162,20 @@ async function submitStoredFormData() {
             }
         });
 
+        console.log('Formspree response status:', response.status);
+        console.log('Formspree response ok:', response.ok);
+
         if (response.ok) {
-            console.log('Form successfully submitted to Formspree');
+            console.log('✅ Form successfully submitted to Formspree');
             // Clear stored data after successful submission
             localStorage.removeItem('espaiCosFormData');
+            console.log('✅ Cleared localStorage');
         } else {
-            console.error('Failed to submit form to Formspree:', response.status);
+            const responseText = await response.text();
+            console.error('❌ Failed to submit form to Formspree:', response.status, responseText);
         }
     } catch (error) {
-        console.error('Error submitting form to Formspree:', error);
+        console.error('❌ Error submitting form to Formspree:', error);
     }
+    console.log('=== End submitStoredFormData ===');
 } 
