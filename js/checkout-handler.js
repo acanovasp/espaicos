@@ -43,13 +43,10 @@ function showCheckoutSuccess() {
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background: var(--green-color, #4CAF50);
-        color: white;
+        background: #82381A;
+        color: #B0FFD1;
         padding: 15px 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         z-index: 10000;
-        font-weight: 500;
         max-width: 90%;
         text-align: center;
     `;
@@ -89,7 +86,7 @@ function showCheckoutCancelled() {
         left: 50%;
         transform: translateX(-50%);
         background: #82381A;
-        color: #F7F7D2;
+        color: #F58869;
         padding: 15px 25px;
         z-index: 10000;
         font-weight: 500;
