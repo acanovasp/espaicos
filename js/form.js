@@ -1,7 +1,9 @@
-// Form validation for Formspree integration
+console.log('🔧 form.js loaded successfully');
 
+// Form validation and handling class
 class FormValidator {
     constructor(formElement) {
+        console.log('🎯 FormValidator constructor called with form:', formElement);
         this.form = formElement;
         this.originalButtonText = '';
         this.validationTimers = new Map(); // Store timers for debounced validation
@@ -11,6 +13,7 @@ class FormValidator {
     }
 
     init() {
+        console.log('🔧 FormValidator init() started');
         // Store original button text for later restoration
         const submitButton = this.form.querySelector('button[type="submit"]');
         if (submitButton) {
@@ -18,8 +21,10 @@ class FormValidator {
         }
         
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        console.log('✅ Submit event listener added to form');
         this.setupInputValidation();
         this.setupStepNavigation();
+        console.log('🎉 FormValidator initialization complete');
     }
 
         setupInputValidation() {
