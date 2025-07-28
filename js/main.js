@@ -351,7 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify({
                         email: input.value.trim(),
-                        language: currentLang || 'es'
+                        language: currentLang || 'es',
+                        source: 'newsletter'
                     })
                 });
 

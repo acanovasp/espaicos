@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
 
     // Validate request body
-    const { email, language } = req.body;
+    const { email, language, source, name, phone, plan } = req.body;
     
     if (!email) {
         return res.status(400).json({ 
@@ -50,6 +50,29 @@ export default async function handler(req, res) {
     }
 
     try {
+        // Prepare subscriber data based on source
+        const subscriberData = {
+            email: email,
+            groups: ['159286458087114300'], // Your group ID
+            fields: {
+                signup_source: source || 'newsletter',
+                language: language || 'es'
+            }
+        };
+
+        // Add additional fields for contact form submissions
+        if (source === 'contact_form') {
+            subscriberData.fields = {
+                ...subscriberData.fields,
+                name: name || '',
+                phone: phone || '',
+                selected_plan: plan || '',
+                signup_source: 'contact_form'
+            };
+        }
+
+        console.log('MailerLite subscriber data:', subscriberData);
+
         // Call MailerLite API
         const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
             method: 'POST',
@@ -58,14 +81,7 @@ export default async function handler(req, res) {
                 'Authorization': `Bearer ${apiKey}`,
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({
-                email: email,
-                groups: ['159286458087114300'], // Your group ID
-                fields: {
-                    signup_source: 'website',
-                    language: language || 'es'
-                }
-            })
+            body: JSON.stringify(subscriberData)
         });
 
         const responseData = await response.json();

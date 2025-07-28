@@ -195,6 +195,9 @@ async function submitStoredFormData() {
             // Clear stored data after successful submission
             localStorage.removeItem('espaiCosFormData');
             console.log('✅ Cleared localStorage');
+            
+            // Also add email to MailerLite for marketing purposes
+            await addEmailToMailerLite(formData);
         } else {
             const responseText = await response.text();
             console.error('❌ Failed to submit form to Formspree:', response.status, responseText);
@@ -203,4 +206,44 @@ async function submitStoredFormData() {
         console.error('❌ Error submitting form to Formspree:', error);
     }
     console.log('=== End submitStoredFormData ===');
+}
+
+// Add contact form email to MailerLite for marketing purposes
+async function addEmailToMailerLite(formData) {
+    console.log('📧 Adding email to MailerLite...');
+    
+    try {
+        const mailerliteData = {
+            email: formData.email,
+            language: window.currentLang || 'es',
+            source: 'contact_form',
+            name: formData.name,
+            phone: formData.tel,
+            plan: formData.plan
+        };
+        
+        console.log('MailerLite payload:', mailerliteData);
+        
+        const response = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(mailerliteData)
+        });
+        
+        const result = await response.json();
+        console.log('MailerLite response:', result);
+        
+        if (response.ok) {
+            console.log('✅ Email successfully added to MailerLite');
+        } else if (response.status === 409) {
+            console.log('ℹ️ Email already exists in MailerLite (expected for repeat customers)');
+        } else {
+            console.warn('⚠️ Failed to add email to MailerLite:', result.error);
+        }
+    } catch (error) {
+        console.error('❌ Error adding email to MailerLite:', error);
+        // Don't throw error - this is optional enhancement, shouldn't break the main flow
+    }
 } 
