@@ -355,6 +355,15 @@ class FormValidator {
             localStorage.setItem('espaiCosFormData', JSON.stringify(formObject));
             console.log('✅ Form data stored in localStorage');
 
+            // Immediate verification
+            const verification = localStorage.getItem('espaiCosFormData');
+            console.log('🔍 IMMEDIATE VERIFICATION - Stored data:', verification);
+            if (verification) {
+                console.log('✅ VERIFICATION PASSED - Data successfully stored');
+            } else {
+                console.log('❌ VERIFICATION FAILED - Data not found in localStorage');
+            }
+
             // Check if running locally (for development)
             if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 // Local development: Skip Stripe and submit directly to Formspree

@@ -10,7 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Checkout handler loaded');
     console.log('URL params:', { checkoutStatus, sessionId });
     console.log('Current URL:', window.location.href);
-    console.log('Stored form data:', localStorage.getItem('espaiCosFormData'));
+    
+    // Debug localStorage state
+    console.log('=== LOCALSTORAGE DEBUG ===');
+    console.log('All localStorage keys:', Object.keys(localStorage));
+    console.log('localStorage length:', localStorage.length);
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        console.log(`localStorage[${key}]:`, localStorage.getItem(key));
+    }
+    console.log('Specific espaiCosFormData:', localStorage.getItem('espaiCosFormData'));
+    console.log('=== END LOCALSTORAGE DEBUG ===');
 
     if (checkoutStatus === 'success' && sessionId) {
         console.log('Success flow triggered');
@@ -26,6 +36,23 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('No checkout status detected');
     }
 });
+
+// Global test function for manual localStorage testing
+window.testLocalStorage = function() {
+    console.log('=== MANUAL LOCALSTORAGE TEST ===');
+    // Set test data
+    localStorage.setItem('testKey', 'testValue');
+    localStorage.setItem('espaiCosTest', JSON.stringify({test: 'data', timestamp: new Date().toISOString()}));
+    
+    // Retrieve test data
+    console.log('Test key:', localStorage.getItem('testKey'));
+    console.log('EspaiCos test:', localStorage.getItem('espaiCosTest'));
+    console.log('Actual form data:', localStorage.getItem('espaiCosFormData'));
+    
+    // List all keys
+    console.log('All keys:', Object.keys(localStorage));
+    console.log('=== END MANUAL TEST ===');
+};
 
 function showCheckoutSuccess() {
     // Submit stored form data to Formspree
