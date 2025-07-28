@@ -302,45 +302,40 @@ class FormValidator {
     }
 
         async handleSubmit(e) {
-        e.preventDefault(); // Always prevent default to handle with AJAX
+        console.log('🚀 === FORM SUBMIT STARTED ===');
+        e.preventDefault();
         
-        // Clear any pending validation timers
-        this.validationTimers.forEach(timer => clearTimeout(timer));
-        this.validationTimers.clear();
-        
-        // Clear any existing success/error messages
-        this.clearMessages();
-        
-        // Validate all steps
-        let isValid = true;
-        for (let step = 1; step <= this.maxStep; step++) {
-            const currentStep = this.currentStep;
-            this.currentStep = step;
-            if (!this.validateCurrentStep()) {
-                isValid = false;
-                // Go back to the first invalid step
-                this.showStep(step);
-                break;
-            }
-            this.currentStep = currentStep;
+        console.log('📝 Validating current step...');
+        if (!this.validateCurrentStep()) {
+            console.log('❌ Current step validation failed');
+            return;
         }
+        console.log('✅ Current step validation passed');
 
-        // Check if a plan is selected
-        const selectedPlan = this.form.querySelector('input[name="plan"]:checked');
-        if (!selectedPlan) {
-            isValid = false;
-            this.showError('Please select a plan before submitting.');
-            this.showStep(2); // Go to plan selection step
-        }
-
-        if (!isValid) {
+        if (this.currentStep < this.maxStep) {
+            console.log('➡️ Moving to next step');
+            this.nextStep();
             return;
         }
 
-        // Show loading state
+        console.log('📋 Final step - preparing submission...');
+        
+        // Get selected plan
+        const selectedPlan = this.form.querySelector('input[name="plan"]:checked');
+        console.log('🎯 Selected plan:', selectedPlan ? selectedPlan.value : 'NONE');
+        
+        if (!selectedPlan) {
+            console.log('❌ No plan selected');
+            this.showError('Please select a plan');
+            return;
+        }
+        console.log('✅ Plan validation passed');
+
         this.showLoading();
+        console.log('⏳ Loading state activated');
 
         try {
+            console.log('🗂️ Preparing localStorage storage...');
             // Clear any existing stored form data before storing new data
             localStorage.removeItem('espaiCosFormData');
             
