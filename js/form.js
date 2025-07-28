@@ -406,46 +406,40 @@ class FormValidator {
     }
 
     async createStripeCheckout(selectedPlan) {
-        // Get form data
-        const formData = new FormData(this.form);
-        const planValue = selectedPlan.value;
+        console.log('🏦 Creating Stripe checkout session...');
+        console.log('Selected plan:', selectedPlan.value);
+        console.log('Current domain:', window.location.origin);
         
-        // Check if Stripe config is available
-        if (!window.STRIPE_CONFIG || !window.STRIPE_CONFIG.priceIds) {
-            throw new Error('Stripe configuration not found');
-        }
-
-        // Get the Stripe price ID for the selected plan
-        const priceId = window.STRIPE_CONFIG.priceIds[planValue];
-        if (!priceId || priceId.includes('REPLACE_WITH')) {
-            throw new Error('Stripe price ID not configured for this plan');
-        }
-
-        // Prepare checkout data
-        const checkoutData = {
+        const priceId = window.STRIPE_CONFIG.priceIds[selectedPlan.value];
+        console.log('Price ID:', priceId);
+        
+        const formData = new FormData(this.form);
+        const payload = {
             priceId: priceId,
             customerEmail: formData.get('email'),
             customerName: formData.get('name'),
-            customerPhone: formData.get('phone'),
-            classInterest: formData.get('class_interest')
+            customerPhone: formData.get('tel'),
+            classInterest: formData.get('schedule')
         };
+        console.log('Stripe checkout payload:', payload);
 
-        // Call our API to create checkout session
         const response = await fetch('/api/create-checkout-session', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(checkoutData)
+            body: JSON.stringify(payload)
         });
 
+        console.log('Stripe API response status:', response.status);
         const result = await response.json();
+        console.log('Stripe API response data:', result);
 
-        if (!response.ok) {
+        if (!result.success) {
             throw new Error(result.error || 'Failed to create checkout session');
         }
 
-        // Redirect to Stripe checkout
+        console.log('🚀 Redirecting to Stripe checkout:', result.url);
         window.location.href = result.url;
     }
 

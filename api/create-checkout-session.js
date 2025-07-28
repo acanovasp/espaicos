@@ -42,10 +42,16 @@ export default async function handler(req, res) {
             });
         }
 
-        // Define your domain (replace with your actual domain)
-        const domain = process.env.VERCEL_URL 
-            ? `https://${process.env.VERCEL_URL}` 
-            : 'http://localhost:3000';
+        // Get the origin domain from the request to ensure we redirect back to the same domain
+        const origin = req.headers.origin || req.headers.referer;
+        const domain = origin 
+            ? origin.replace(/\/$/, '') // Remove trailing slash
+            : (process.env.VERCEL_URL 
+                ? `https://${process.env.VERCEL_URL}` 
+                : 'http://localhost:3000');
+
+        console.log('Origin header:', origin);
+        console.log('Using domain for redirect:', domain);
 
         // Create Stripe checkout session
         const session = await stripe.checkout.sessions.create({
