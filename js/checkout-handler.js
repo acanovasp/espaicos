@@ -47,6 +47,7 @@ function showCheckoutSuccess() {
         color: #82381A;
         padding: 15px 25px;
         z-index: 10000;
+        font-weight: 500;
         max-width: 90%;
         text-align: center;
     `;
