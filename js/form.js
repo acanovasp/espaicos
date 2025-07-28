@@ -352,13 +352,40 @@ class FormValidator {
             }
             localStorage.setItem('espaiCosFormData', JSON.stringify(formObject));
 
-            // Create Stripe checkout session
-            await this.createStripeCheckout(selectedPlan);
+            // Check if running locally (for development)
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                // Local development: Skip Stripe and submit directly to Formspree
+                console.log('Local development detected - submitting directly to Formspree');
+                await this.submitToFormspree(formData);
+                this.showSuccess();
+                setTimeout(() => this.resetForm(), 2000);
+                localStorage.removeItem('espaiCosFormData');
+            } else {
+                // Production: Create Stripe checkout session
+                await this.createStripeCheckout(selectedPlan);
+            }
         } catch (error) {
             console.error('Stripe checkout error:', error);
             this.showError('An error occurred. Please try again.');
             this.resetButton();
         }
+    }
+
+    // Direct Formspree submission for local development
+    async submitToFormspree(formData) {
+        const response = await fetch('https://formspree.io/f/mwpbjape', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to submit form to Formspree');
+        }
+
+        return response;
     }
 
     clearMessages() {
