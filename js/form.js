@@ -341,6 +341,17 @@ class FormValidator {
         this.showLoading();
 
         try {
+            // Clear any existing stored form data before storing new data
+            localStorage.removeItem('espaiCosFormData');
+            
+            // Store form data in localStorage for post-payment submission to Formspree
+            const formData = new FormData(this.form);
+            const formObject = {};
+            for (let [key, value] of formData.entries()) {
+                formObject[key] = value;
+            }
+            localStorage.setItem('espaiCosFormData', JSON.stringify(formObject));
+
             // Create Stripe checkout session
             await this.createStripeCheckout(selectedPlan);
         } catch (error) {

@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showCheckoutSuccess() {
+    // Submit stored form data to Formspree
+    submitStoredFormData();
+
     // Create success message
     const successMessage = document.createElement('div');
     successMessage.className = 'checkout-message checkout-success';
@@ -27,11 +30,13 @@ function showCheckoutSuccess() {
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background: #B0FFD1;
-        color: #82381A;
+        background: var(--green-color, #4CAF50);
+        color: white;
         padding: 15px 25px;
-        border-radius: 0px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         z-index: 10000;
+        font-weight: 500;
         max-width: 90%;
         text-align: center;
     `;
@@ -60,6 +65,9 @@ function showCheckoutSuccess() {
 }
 
 function showCheckoutCancelled() {
+    // Clear stored form data on cancellation
+    localStorage.removeItem('espaiCosFormData');
+
     // Create cancellation message
     const cancelMessage = document.createElement('div');
     cancelMessage.className = 'checkout-message checkout-cancelled';
@@ -106,4 +114,43 @@ function cleanupUrl() {
     url.searchParams.delete('checkout');
     url.searchParams.delete('session_id');
     window.history.replaceState({}, document.title, url.toString());
+}
+
+// Submit stored form data to Formspree after successful payment
+async function submitStoredFormData() {
+    try {
+        // Get stored form data
+        const storedData = localStorage.getItem('espaiCosFormData');
+        if (!storedData) {
+            console.log('No stored form data found');
+            return;
+        }
+
+        const formData = JSON.parse(storedData);
+        
+        // Create FormData object for submission
+        const submitData = new FormData();
+        for (const [key, value] of Object.entries(formData)) {
+            submitData.append(key, value);
+        }
+
+        // Submit to Formspree
+        const response = await fetch('https://formspree.io/f/mwpbjape', {
+            method: 'POST',
+            body: submitData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            console.log('Form successfully submitted to Formspree');
+            // Clear stored data after successful submission
+            localStorage.removeItem('espaiCosFormData');
+        } else {
+            console.error('Failed to submit form to Formspree:', response.status);
+        }
+    } catch (error) {
+        console.error('Error submitting form to Formspree:', error);
+    }
 } 
