@@ -396,22 +396,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Mobile logo fix for mix-blend-mode issues
+// Video logo control for play-once behavior
 document.addEventListener('DOMContentLoaded', function() {
-    // Detect mobile devices
-    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-                     || window.innerWidth <= 768;
+    const logoVideo = document.querySelector('.logo.is-animated');
     
-    if (isMobile) {
-        const logo = document.querySelector('.logo.is-animated');
-        if (logo) {
-            console.log('🔧 Applying mobile logo fix for blend mode issues');
-            
-            // Add mobile-specific class for additional styling if needed
-            logo.classList.add('mobile-logo');
-            
-            // Alternative: If you have a transparent version, uncomment this:
-            // logo.src = logo.src.replace('animation_transparent-once.webp', 'animation_transparent-mobile.webp');
-        }
+    if (logoVideo && logoVideo.tagName === 'VIDEO') {
+        console.log('🎬 Setting up logo video play-once behavior');
+        
+        // Ensure video is paused initially
+        logoVideo.pause();
+        logoVideo.currentTime = 0;
+        
+        // Play video once with a 2-second delay (similar to CSS animation-delay)
+        setTimeout(() => {
+            logoVideo.play().catch(error => {
+                console.warn('⚠️ Video autoplay failed (browser policy):', error);
+                // Fallback: play on first user interaction
+                document.addEventListener('click', () => {
+                    if (logoVideo.paused) {
+                        logoVideo.play();
+                    }
+                }, { once: true });
+            });
+        }, 2000);
+        
+        // Ensure video stops after playing once
+        logoVideo.addEventListener('ended', () => {
+            console.log('✅ Logo animation completed');
+            logoVideo.pause();
+        });
     }
 });
