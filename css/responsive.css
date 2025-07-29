@@ -485,6 +485,7 @@
         overflow-wrap: break-word;
         hyphens: auto;
         max-width: 100%;
+        box-sizing: border-box;
     }
     
     .footer .footer-section h3 {
@@ -492,6 +493,14 @@
         overflow-wrap: break-word;
         hyphens: auto;
         max-width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Prevent layout shifts during language transitions */
+    .footer .footer-section,
+    .footer .footer-section * {
+        transition: none;
+        animation: none;
     }
 
     .footer-section .footer-logo {
