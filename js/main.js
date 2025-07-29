@@ -395,3 +395,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Mobile logo fix for mix-blend-mode issues
+document.addEventListener('DOMContentLoaded', function() {
+    // Detect mobile devices
+    const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                     || window.innerWidth <= 768;
+    
+    if (isMobile) {
+        const logo = document.querySelector('.logo.is-animated');
+        if (logo) {
+            console.log('🔧 Applying mobile logo fix for blend mode issues');
+            
+            // Add mobile-specific class for additional styling if needed
+            logo.classList.add('mobile-logo');
+            
+            // Alternative: If you have a transparent version, uncomment this:
+            // logo.src = logo.src.replace('animation_transparent-once.webp', 'animation_transparent-mobile.webp');
+        }
+    }
+});
