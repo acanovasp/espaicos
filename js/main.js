@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }, { once: true });
             });
-        }, 2000);
+        }, 500);
         
         // Ensure video stops after playing once
         logoVideo.addEventListener('ended', () => {

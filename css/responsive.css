@@ -76,6 +76,14 @@
         transform: none;
     }
 
+    .desktop-logo {
+        display: none;
+    }
+    
+    .mobile-logo {
+        display: block;
+    }
+
     .menu-navigation {
         padding: var(--spacing-xs);
     }
