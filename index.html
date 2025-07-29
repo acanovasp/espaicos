@@ -85,11 +85,12 @@
                     <button>Español</button>
                     <button>English</button>
                 </div>
-                <video class="logo is-animated" muted playsinline preload="metadata" webkit-playsinline="true" x5-playsinline="true" poster="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAGA60e6kgAAAABJRU5ErkJggg==">
+                <!-- Desktop: Video with animation -->
+                <video class="logo is-animated desktop-logo" muted playsinline preload="metadata">
                     <source src="assets/images/animation_transparent-once.webm" type="video/webm">
-                    <!-- Fallback for browsers that don't support WebM -->
-                    <img src="assets/images/animation_transparent-once.webp" alt="Espai Cos logo">
                 </video>
+                <!-- Mobile: Static image -->
+                <img class="logo mobile-logo" src="assets/icons/EspaiCos-logo.svg" alt="Espai Cos logo">
                 <h1 data-i18n="home.title">Espai Cos es un lugar donde poder celebrar, redescubrir y reinventar el cuerpo a través de la formación en danza y la creación artística.</h1>
             </div>
         </div>

@@ -191,43 +191,25 @@ li {
 .logo.is-animated {
     /* Video will be controlled by JavaScript for play-once behavior */
     opacity: 1;
-    /* Force transparent background for video element */
-    background-color: transparent !important;
-    background: transparent !important;
 }
 
-/* Ensure video transparency on all browsers */
-video.logo {
-    background-color: transparent !important;
-    background: transparent !important;
-    /* Prevent default video black background */
-    object-fit: contain;
-    object-position: center;
-    /* Force transparent rendering */
-    opacity: 1;
-    /* Remove any default video styling */
-    border: none;
-    outline: none;
+/* Desktop: Show video, hide image */
+.desktop-logo {
+    display: block;
 }
 
-/* Force video to be transparent from the start */
-video.logo.is-animated {
-    background: rgba(0,0,0,0) !important;
-    background-color: rgba(0,0,0,0) !important;
-    /* Ensure transparency during all video states */
-    -webkit-background-color: transparent !important;
+.mobile-logo {
+    display: none;
 }
 
-/* Mobile-specific video transparency fixes */
+/* Mobile: Hide video, show image */
 @media (max-width: 768px) {
-    video.logo {
-        /* Additional mobile transparency enforcement */
-        background-color: rgba(0,0,0,0) !important;
-        background-image: none !important;
-        /* Remove any potential background elements */
-        box-shadow: none !important;
-        border: none !important;
-        outline: none !important;
+    .desktop-logo {
+        display: none;
+    }
+    
+    .mobile-logo {
+        display: block;
     }
 }
 

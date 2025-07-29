@@ -8,8 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeMenu = document.querySelector('.close-menu');
 
     // Random logo background color on hover/touch
-    const logo = document.querySelector('.logo');
+    const logo = document.querySelector('.logo'); // This will select the first .logo element
     const logoInMenu = document.querySelector('.menu-logo');
+    
+    // Get both desktop and mobile logos for color changing
+    const desktopLogo = document.querySelector('.desktop-logo');
+    const mobileLogo = document.querySelector('.mobile-logo');
+    const allLogos = [desktopLogo, mobileLogo, logoInMenu].filter(Boolean); // Remove null elements
+    
     const colors = [
         'var(--blue-color)',
         'var(--green-color)',
@@ -57,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // Add event listeners to both logos
-    [logo, logoInMenu].forEach(logoElement => {
+    allLogos.forEach(logoElement => {
         if (logoElement) {
             // Desktop hover events
             logoElement.addEventListener('mouseenter', () => {
@@ -396,65 +402,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Video logo control for play-once behavior
+// Video logo control for play-once behavior (desktop only)
 document.addEventListener('DOMContentLoaded', function() {
-    const logoVideo = document.querySelector('.logo.is-animated');
+    const logoVideo = document.querySelector('.desktop-logo');
     
-    if (logoVideo && logoVideo.tagName === 'VIDEO') {
-        console.log('🎬 Setting up logo video play-once behavior');
-        
-        // Detect mobile devices
-        const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-                         || window.innerWidth <= 768;
-        
-        // Force transparent styles
-        logoVideo.style.backgroundColor = 'transparent';
-        logoVideo.style.background = 'transparent';
-        
-        // Check for WebM support and transparency issues on mobile
-        if (isMobile) {
-            // Test if video transparency works by checking browser support
-            const canPlayWebM = logoVideo.canPlayType('video/webm').replace(/no/, '');
-            console.log('📱 Mobile WebM support:', canPlayWebM);
-            
-            if (!canPlayWebM) {
-                console.warn('⚠️ WebM not supported on mobile, falling back to image');
-                fallbackToImage();
-                return;
-            }
-        }
+    // Only control video on desktop (when video element is visible)
+    if (logoVideo && logoVideo.tagName === 'VIDEO' && window.innerWidth > 768) {
+        console.log('🎬 Setting up desktop logo video play-once behavior');
         
         // Ensure video is paused initially
         logoVideo.pause();
         logoVideo.currentTime = 0;
         
-        // Add transparency check after video loads
-        logoVideo.addEventListener('loadeddata', () => {
-            // Mark as transparency OK for CSS
-            logoVideo.setAttribute('data-transparency-ok', 'true');
-            console.log('✅ Video loaded with transparency support');
-        });
-        
-        // Handle load errors - fallback to image
-        logoVideo.addEventListener('error', () => {
-            console.warn('❌ Video failed to load, falling back to image');
-            fallbackToImage();
-        });
-        
         // Play video once with a 2-second delay (similar to CSS animation-delay)
         setTimeout(() => {
             logoVideo.play().catch(error => {
-                console.warn('⚠️ Video autoplay failed, trying fallback:', error);
-                // If autoplay fails on mobile, try image fallback
-                if (isMobile) {
-                    fallbackToImage();
-                    return;
-                }
-                
-                // Desktop fallback: play on first user interaction
+                console.warn('⚠️ Video autoplay failed (browser policy):', error);
+                // Fallback: play on first user interaction
                 document.addEventListener('click', () => {
                     if (logoVideo.paused) {
-                        logoVideo.play().catch(() => fallbackToImage());
+                        logoVideo.play();
                     }
                 }, { once: true });
             });
@@ -462,27 +429,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Ensure video stops after playing once
         logoVideo.addEventListener('ended', () => {
-            console.log('✅ Logo animation completed');
+            console.log('✅ Desktop logo animation completed');
             logoVideo.pause();
         });
-        
-        // Fallback function to switch to image
-        function fallbackToImage() {
-            const fallbackImg = logoVideo.querySelector('img');
-            if (fallbackImg) {
-                // Hide video and show image
-                logoVideo.style.display = 'none';
-                fallbackImg.style.display = 'block';
-                fallbackImg.style.position = 'absolute';
-                fallbackImg.style.left = '50%';
-                fallbackImg.style.top = '50dvh';
-                fallbackImg.style.transform = 'translate(-50%, -50%)';
-                fallbackImg.style.width = '100px';
-                fallbackImg.style.height = 'auto';
-                fallbackImg.style.zIndex = '10';
-                fallbackImg.classList.add('logo', 'is-animated');
-                console.log('🔄 Switched to fallback image');
-            }
-        }
+    } else if (window.innerWidth <= 768) {
+        console.log('📱 Mobile detected - using static logo image');
     }
 });

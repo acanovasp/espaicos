@@ -27,7 +27,7 @@ class FormValidator {
         console.log('🎉 FormValidator initialization complete');
     }
 
-        setupInputValidation() {
+    setupInputValidation() {
         const inputs = this.form.querySelectorAll('input, textarea, select');
         inputs.forEach(input => {
             // Always validate immediately on blur (when user leaves the field)
@@ -41,7 +41,7 @@ class FormValidator {
                 input.addEventListener('change', () => this.clearRadioGroupError(input.name));
             } else {
                 // For other fields, validate immediately on input
-                input.addEventListener('input', () => this.validateField(input));
+            input.addEventListener('input', () => this.validateField(input));
             }
         });
     }
@@ -306,7 +306,7 @@ class FormValidator {
         }
     }
 
-        async handleSubmit(e) {
+    async handleSubmit(e) {
         console.log('🚀 === FORM SUBMIT STARTED ===');
         e.preventDefault();
         
@@ -345,7 +345,7 @@ class FormValidator {
             localStorage.removeItem('espaiCosFormData');
             
             // Store form data in localStorage for post-payment submission to Formspree
-            const formData = new FormData(this.form);
+                const formData = new FormData(this.form);
             const formObject = {};
             for (let [key, value] of formData.entries()) {
                 formObject[key] = value;
@@ -477,7 +477,7 @@ class FormValidator {
 
         // Reset form after a delay
         setTimeout(() => {
-            this.form.reset();
+        this.form.reset();
             this.resetForm();
         }, 3000);
     }
