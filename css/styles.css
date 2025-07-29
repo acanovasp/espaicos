@@ -618,6 +618,20 @@ input.error, textarea.error {
     background-color: rgba(211, 47, 47, 0.1);
 }
 
+/* Mobile-specific form field styling - remove rounded corners */
+@media (max-width: 768px) {
+    input, 
+    textarea, 
+    select,
+    .form-control {
+        border-radius: 0 !important;
+        -webkit-border-radius: 0 !important;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+}
+
 .btn {
     background-color: var(--brown-color);
     color: var(--beige-color);

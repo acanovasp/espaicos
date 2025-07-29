@@ -254,6 +254,29 @@
         mix-blend-mode: multiply;
     }
 
+    /* Remove rounded corners from form fields on mobile */
+    input, 
+    textarea, 
+    select,
+    .form-control {
+        border-radius: 0 !important;
+        -webkit-border-radius: 0 !important;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    /* Specifically target iOS Safari form styling */
+    input[type="text"],
+    input[type="email"], 
+    input[type="tel"],
+    input[type="password"],
+    textarea {
+        border-radius: 0 !important;
+        -webkit-border-radius: 0 !important;
+        -webkit-appearance: none;
+    }
+
     .space-img-wrapper {
         grid-column: 1 / -1;  
         grid-row: 6; 
