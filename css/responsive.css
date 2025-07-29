@@ -416,7 +416,7 @@
         flex-wrap: wrap;
         gap: var(--spacing-sm);
         padding: 0 var(--spacing-xs) var(--spacing-xs) var(--spacing-xs);
-        align-items: flex-end;
+        align-items: flex-start;
     }
 
     
@@ -426,38 +426,45 @@
     
     .footer div:nth-child(2) {
         order: 3;
-        flex: 0 1 auto;
-        min-width: 0;
+        width: 100%;
+        flex-basis: 100%;
     }
     
     .footer div:nth-child(3) {
         order: 1;
-        flex: 0 1 48%;
-        min-width: 0;
-        max-width: 48%;
+        width: calc(50% - var(--spacing-sm)/2);
+        flex-basis: calc(50% - var(--spacing-sm)/2);
+        flex-shrink: 0;
     }
     
     .footer div:nth-child(4) {
-        grid-column: 9 / span 2;
+        order: 2;
+        width: calc(50% - var(--spacing-sm)/2);
+        flex-basis: calc(50% - var(--spacing-sm)/2);
+        flex-shrink: 0;
         display: flex;
         flex-direction: column;
-        align-self: flex-end;
-        order: 2;
-        flex: 0 1 48%;
-        min-width: 0;
-        max-width: 48%;
+        align-self: flex-start;
     }
     
     .footer div:nth-child(5) {
         order: 4;
-        flex-grow: 1;
-        flex-basis: 100%;
         width: 100%;
+        flex-basis: 100%;
+        flex-grow: 1;
     }
 
     .newsletter-form {
         display: flex;
         flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .newsletter-form input[type="text"] {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .footer-section-mobile {
@@ -472,28 +479,19 @@
         margin-top: 0;
     }
 
-    /* Force consistent text wrapping after language changes */
-    .footer [data-i18n="footer.address_title"],
-    .footer [data-i18n="footer.address"] {
+    /* Ensure proper text wrapping in footer sections */
+    .footer .footer-section {
         word-wrap: break-word;
         overflow-wrap: break-word;
         hyphens: auto;
-    }
-    
-    /* Ensure footer layout stability after DOM updates */
-    .footer div:nth-child(3) h3,
-    .footer div:nth-child(4) h3 {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         max-width: 100%;
     }
     
-    /* Reset text wrapping for address content only */
-    .footer [data-i18n="footer.address"] {
-        white-space: normal !important;
-        overflow: visible !important;
-        text-overflow: unset !important;
+    .footer .footer-section h3 {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        max-width: 100%;
     }
 
     .footer-section .footer-logo {
