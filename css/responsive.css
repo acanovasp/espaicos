@@ -426,10 +426,15 @@
     
     .footer div:nth-child(2) {
         order: 3;
+        flex: 0 1 auto;
+        min-width: 0;
     }
     
     .footer div:nth-child(3) {
         order: 1;
+        flex: 0 1 48%;
+        min-width: 0;
+        max-width: 48%;
     }
     
     .footer div:nth-child(4) {
@@ -438,11 +443,16 @@
         flex-direction: column;
         align-self: flex-end;
         order: 2;
+        flex: 0 1 48%;
+        min-width: 0;
+        max-width: 48%;
     }
     
     .footer div:nth-child(5) {
         order: 4;
         flex-grow: 1;
+        flex-basis: 100%;
+        width: 100%;
     }
 
     .newsletter-form {
@@ -460,6 +470,30 @@
 
     .footer-section-mobile .language-selector {
         margin-top: 0;
+    }
+
+    /* Force consistent text wrapping after language changes */
+    .footer [data-i18n="footer.address_title"],
+    .footer [data-i18n="footer.address"] {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    /* Ensure footer layout stability after DOM updates */
+    .footer div:nth-child(3) h3,
+    .footer div:nth-child(4) h3 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+    
+    /* Reset text wrapping for address content only */
+    .footer [data-i18n="footer.address"] {
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
     }
 
     .footer-section .footer-logo {

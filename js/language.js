@@ -160,6 +160,22 @@ async function switchLanguage(lang) {
     // Update text content with animation
     updateTextContent();
     
+    // Force footer layout recalculation on mobile after language change
+    if (window.innerWidth <= 768) {
+        setTimeout(() => {
+            const footer = document.querySelector('.footer');
+            if (footer) {
+                // Force reflow by temporarily changing and restoring display
+                const originalDisplay = footer.style.display;
+                footer.style.display = 'none';
+                footer.offsetHeight; // Trigger reflow
+                footer.style.display = originalDisplay || 'flex';
+                
+                console.log('🔧 Footer layout recalculated after language change');
+            }
+        }, 100);
+    }
+    
     // Save language preference
     localStorage.setItem('preferredLanguage', lang);
 }
