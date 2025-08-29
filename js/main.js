@@ -1,5 +1,27 @@
 // Main JavaScript functionality
 
+// Browser detection for logo display
+function detectBrowser() {
+    const userAgent = navigator.userAgent;
+    const isChrome = /Chrome/.test(userAgent) && !/Edge/.test(userAgent);
+    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+    
+    if (isSafari) {
+        document.body.classList.add('is-safari');
+        console.log('Safari detected - using static SVG logo');
+    } else if (isChrome) {
+        document.body.classList.add('is-chrome');  
+        console.log('Chrome/Chromium detected - using WebM video logo');
+    } else {
+        // Default to Chrome behavior for other browsers
+        document.body.classList.add('is-chrome');
+        console.log('Other browser detected - defaulting to WebM video logo');
+    }
+}
+
+// Run browser detection immediately
+detectBrowser();
+
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
@@ -11,10 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const logo = document.querySelector('.logo'); // This will select the first .logo element
     const logoInMenu = document.querySelector('.menu-logo');
     
-    // Get both desktop and mobile logos for color changing
-    const desktopLogo = document.querySelector('.desktop-logo');
+    // Get all logo elements for color changing
+    const chromeDesktopLogo = document.querySelector('.chrome-logo');
+    const safariDesktopLogo = document.querySelector('.safari-logo'); 
     const mobileLogo = document.querySelector('.mobile-logo');
-    const allLogos = [desktopLogo, mobileLogo, logoInMenu].filter(Boolean); // Remove null elements
+    const allLogos = [chromeDesktopLogo, safariDesktopLogo, mobileLogo, logoInMenu].filter(Boolean); // Remove null elements
     
     const colors = [
         'var(--blue-color)',
@@ -402,13 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Video logo control for play-once behavior (desktop only)
+// Video logo control for play-once behavior (Chrome/Chromium desktop only)
 document.addEventListener('DOMContentLoaded', function() {
-    const logoVideo = document.querySelector('.desktop-logo');
+    const logoVideo = document.querySelector('.chrome-logo');
     
-    // Only control video on desktop (when video element is visible)
-    if (logoVideo && logoVideo.tagName === 'VIDEO' && window.innerWidth > 768) {
-        console.log('🎬 Setting up desktop logo video play-once behavior');
+    // Only control video on desktop Chrome/Chromium browsers
+    if (logoVideo && logoVideo.tagName === 'VIDEO' && window.innerWidth > 768 && document.body.classList.contains('is-chrome')) {
+        console.log('🎬 Setting up Chrome/Chromium desktop logo video play-once behavior');
         
         // Ensure video is paused initially
         logoVideo.pause();
@@ -434,5 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     } else if (window.innerWidth <= 768) {
         console.log('📱 Mobile detected - using static logo image');
+    } else if (document.body.classList.contains('is-safari')) {
+        console.log('🧭 Safari detected - using static SVG logo on desktop');
     }
 });

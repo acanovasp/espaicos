@@ -512,4 +512,10 @@
         display: none;
     }
 
+    /* Browser-specific logo display */
+    .chrome-logo,
+    .safari-logo {
+        display: none;
+    }
+
 }

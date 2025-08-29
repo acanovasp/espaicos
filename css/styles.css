@@ -1093,3 +1093,28 @@ h3[data-i18n="form.lab_payment_info"] {
     margin-bottom: 0;
 }
 
+/* Browser-specific logo display */
+/* Default: hide both browser-specific logos */
+.chrome-logo,
+.safari-logo {
+    display: none;
+}
+
+/* Show Chrome logo on Chromium-based browsers */
+.is-chrome .chrome-logo {
+    display: block;
+}
+
+.is-chrome .safari-logo {
+    display: none;
+}
+
+/* Show Safari logo on Safari */
+.is-safari .safari-logo {
+    display: block;
+}
+
+.is-safari .chrome-logo {
+    display: none;
+}
+
