@@ -80,6 +80,10 @@
     .desktop-logo {
         display: none;
     }
+
+    .logo.desktop-logo.safari-logo {
+        display: none;
+    }
     
     .mobile-logo {
         display: block;
