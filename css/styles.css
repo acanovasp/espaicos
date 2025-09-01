@@ -363,7 +363,7 @@ li {
     border-bottom: 1.5px solid #82381A;
     transition: all ease 0.6s;
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateX(calc(var(--spacing-md) * -1));
 }
 
 .top-padding {
@@ -374,12 +374,6 @@ li {
 .schedule-class.animate-in {
     opacity: 1;
     transform: translateX(0);
-    padding-left: var(--spacing-sm);
-}
-
-/* Keep hover effect for manual interaction */
-.schedule-class:hover {
-    padding-left: calc(var(--spacing-sm) * 1.5);
 }
 
 .space-section {
