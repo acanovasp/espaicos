@@ -26,7 +26,7 @@
             "description": "La clase de Danza Contemporánea para Adolescentes ofrece un espacio dinámico para explorar el movimiento desde la técnica, la creación y la expresión personal. A través de ejercicios técnicos, trabajo en el suelo, secuencias coreográficas y propuestas de improvisación, los alumnos desarrollarán la conciencia corporal, la sensibilidad artística y la escucha propia y grupal. La clase estimula el trabajo colaborativo, el desarrollo de un lenguaje corporal propio, la reflexión y la conexión individual."
         },
         "classical": {
-            "title": "Ballet Infantil",
+            "title": "Ballet para niños y niñas",
             "age": "8-12 años",
             "description": "Las clase de Danza Clásica para niños y niñas de 8 a 12 años introduce y asienta las bases de la técnica del ballet de forma progresiva, respetando el desarrollo físico, cognitivo y emocional de los alumnos. A través de ejercicios en el suelo, la barra, el centro y pequeñas combinaciones, se trabajará la colocación, la coordinación, la musicalidad y la disciplina, sin dejar de lado el disfrute y la expresión artística. El ambiente es amable y familiar, fomentando la constancia, el trabajo en equipo y el amor por la danza clásica desde una base sólida y motivadora."
         },
@@ -55,7 +55,7 @@
         "creative": "Danza Creativa",
         "contemporary": "Danza Contemporánea Adolescentes",
         "adults": "Danza Contemporánea Adultos I",
-        "classical": "Ballet Infantil",
+        "classical": "Ballet",
         "classicalAdults": "Ballet Adultos",
         "adults2": "Danza Contemporánea Adultos II",
         "lab": "LAB Creativo"

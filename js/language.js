@@ -48,9 +48,12 @@ async function initTranslations() {
 
 // Update text content with animation
 function updateTextContent() {
+    console.log('🔄 Updating text content for language:', currentLang);
     if (!translations[currentLang]) {
+        console.error('❌ No translations found for:', currentLang);
         return;
     }
+    console.log('✅ Found translations for:', currentLang);
     
     // Get all elements with data-i18n attribute
     const elements = document.querySelectorAll('[data-i18n]');
@@ -119,7 +122,6 @@ function updateTextContent() {
 // Helper function to update individual element content
 function updateElementContent(element) {
     const keys = element.getAttribute('data-i18n').split('.');
-    const translationKey = keys.join('.');
     let value = translations[currentLang];
     
     // Navigate through the translation object
@@ -127,7 +129,6 @@ function updateElementContent(element) {
         if (value && value[key] !== undefined) {
             value = value[key];
         } else {
-            console.warn(`🚫 Translation missing for ${translationKey} in ${currentLang}`);
             return;
         }
     }
@@ -136,20 +137,14 @@ function updateElementContent(element) {
     if (Array.isArray(value)) {
         // Handle arrays (like space features)
         element.innerHTML = value.map(item => `<p>${item}</p>`).join('');
-        console.log(`📝 Updated array content for ${translationKey}:`, value);
     } else {
-        const oldText = element.textContent;
         element.textContent = value;
-        console.log(`📝 Updated ${translationKey}: "${oldText}" → "${value}"`);
     }
 }
 
 // Switch language
 async function switchLanguage(lang) {
-    console.log(`🔄 switchLanguage called: ${lang}, currentLang: ${currentLang}`);
-    
     if (currentLang === lang) {
-        console.log('⏭️ Skipping language switch - already active');
         return;
     }
     
@@ -166,12 +161,10 @@ async function switchLanguage(lang) {
     });
     
     // Update text content with animation
-    console.log(`🔄 Updating content for language: ${lang}`);
     updateTextContent();
     
     // Save language preference
     localStorage.setItem('preferredLanguage', lang);
-    console.log(`✅ Language switched to: ${lang}`);
 }
 
 // Get language code from button text
@@ -186,25 +179,16 @@ function getLanguageFromButton(buttonText) {
 
 // Initialize language switcher
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🌐 Language system initializing...');
-    
     // Load translations
     await initTranslations();
     
     // Debug: Check if Spanish translations loaded correctly
-    console.log('🌐 Loaded translations:', Object.keys(translations));
-    console.log('🇪🇸 Spanish translations loaded:', !!translations.es && Object.keys(translations.es).length > 0);
-    if (translations.es) {
-        console.log('🇪🇸 Spanish translation keys:', Object.keys(translations.es));
-    }
+    console.log('🌍 Spanish translations loaded:', translations.es ? 'YES' : 'NO');
+    console.log('🌍 Available translations:', Object.keys(translations));
     
     // Set initial language from localStorage or default to Spanish
     const savedLang = localStorage.getItem('preferredLanguage') || 'es';
-    console.log('🔄 Initializing with language:', savedLang);
-    
-    // Force initial content update by temporarily setting currentLang to different value
-    const originalLang = currentLang;
-    currentLang = 'temp'; // Temporary value to force update
+    console.log('🌍 Setting initial language to:', savedLang);
     await switchLanguage(savedLang);
     
     // Add click handlers to language buttons
