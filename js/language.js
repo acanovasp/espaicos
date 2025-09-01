@@ -9,7 +9,11 @@ window.currentTranslations = translations;
 // Load translations
 async function loadTranslations(lang) {
     try {
-        const response = await fetch(`./assets/translations/${lang}.json`);
+        // Add cache-busting parameter to force fresh load
+        const cacheBuster = new Date().getTime();
+        const response = await fetch(`./assets/translations/${lang}.json?v=${cacheBuster}`);
+        
+        console.log(`🔍 Loading ${lang} translations...`, response.status);
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -17,9 +21,16 @@ async function loadTranslations(lang) {
         
         const data = await response.json();
         translations[lang] = data;
+        
+        // Debug: Log specific content we're testing
+        if (lang === 'es') {
+            console.log('🧪 Spanish contemporary title:', data.classes?.contemporary?.title);
+            console.log('🧪 Spanish classical title:', data.classes?.classical?.title);
+        }
+        
         return data;
     } catch (error) {
-        console.error(`Error loading ${lang} translations:`, error);
+        console.error(`❌ Error loading ${lang} translations:`, error);
         translations[lang] = {};
         return {};
     }
