@@ -154,11 +154,13 @@ function updateElementContent(element) {
 }
 
 // Switch language
-async function switchLanguage(lang) {
-    if (currentLang === lang) {
+async function switchLanguage(lang, forceUpdate = false) {
+    if (currentLang === lang && !forceUpdate) {
+        console.log('⚠️ Language already set to:', lang, '- Use forceUpdate to override');
         return;
     }
     
+    console.log('🔄 Switching language to:', lang, forceUpdate ? '(forced)' : '');
     currentLang = lang;
     window.currentLang = lang; // Update global reference
     
@@ -200,7 +202,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set initial language from localStorage or default to Spanish
     const savedLang = localStorage.getItem('preferredLanguage') || 'es';
     console.log('🌍 Setting initial language to:', savedLang);
-    await switchLanguage(savedLang);
+    
+    // Force update for Spanish to ensure JSON content loads even on initial load
+    const forceUpdate = savedLang === 'es';
+    await switchLanguage(savedLang, forceUpdate);
     
     // Add click handlers to language buttons
     const buttons = document.querySelectorAll('.language-selector button');
@@ -208,7 +213,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
             const lang = getLanguageFromButton(button.textContent);
-            switchLanguage(lang);
+            // Force update for Spanish to ensure JSON content always loads
+            const forceUpdate = lang === 'es';
+            switchLanguage(lang, forceUpdate);
         });
     });
 }); 
