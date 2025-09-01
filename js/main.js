@@ -462,60 +462,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Scroll-triggered animations for schedule section
+// Scroll-triggered animations for individual schedule items
 document.addEventListener('DOMContentLoaded', function() {
-    const scheduleSection = document.querySelector('#schedule-section');
     const scheduleClasses = document.querySelectorAll('.schedule-class');
     
-    if (!scheduleSection || scheduleClasses.length === 0) {
+    if (scheduleClasses.length === 0) {
         return;
     }
     
-    console.log('🎬 Setting up scroll animations for', scheduleClasses.length, 'schedule items');
+    console.log('🎬 Setting up individual scroll animations for', scheduleClasses.length, 'schedule items');
     
-    // Create intersection observer for the schedule section
+    // Create intersection observer for individual schedule items
     const observerOptions = {
         root: null,
-        rootMargin: '-10% 0px -10% 0px', // Trigger when 10% of element is visible
-        threshold: 0.3 // Trigger when 30% of element is visible
+        rootMargin: '0px 0px -20% 0px', // Trigger when element is 20% into viewport
+        threshold: 0.5 // Trigger when 50% of element is visible
     };
     
-    const scheduleObserver = new IntersectionObserver((entries) => {
+    const itemObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                console.log('✨ Schedule section is visible - triggering animations');
+                const element = entry.target;
+                const itemIndex = Array.from(scheduleClasses).indexOf(element) + 1;
                 
-                // Add animation class to all schedule items
-                scheduleClasses.forEach((item, index) => {
-                    setTimeout(() => {
-                        item.classList.add('animate-in');
-                        console.log(`🎯 Animating schedule item ${index + 1}`);
-                    }, index * 150); // Stagger animations by 150ms
-                });
+                console.log(`✨ Schedule item ${itemIndex} entered viewport - animating`);
+                element.classList.add('animate-in');
                 
-                // Stop observing after animation triggers
-                scheduleObserver.unobserve(entry.target);
+                // Stop observing this specific item after animation triggers
+                itemObserver.unobserve(element);
             }
         });
     }, observerOptions);
     
-    // Start observing the schedule section
-    scheduleObserver.observe(scheduleSection);
-    
-    // Optional: Reset animation if user scrolls back up (uncomment if desired)
-    /*
-    const resetObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
-                // User scrolled past the section, reset for next time
-                scheduleClasses.forEach(item => {
-                    item.classList.remove('animate-in');
-                });
-                scheduleObserver.observe(scheduleSection);
-            }
-        });
-    }, { threshold: 0 });
-    
-    resetObserver.observe(scheduleSection);
-    */
+    // Start observing each schedule item individually
+    scheduleClasses.forEach((item, index) => {
+        console.log(`👀 Observing schedule item ${index + 1}`);
+        itemObserver.observe(item);
+    });
 });
