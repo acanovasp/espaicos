@@ -119,6 +119,7 @@ function updateTextContent() {
 // Helper function to update individual element content
 function updateElementContent(element) {
     const keys = element.getAttribute('data-i18n').split('.');
+    const translationKey = keys.join('.');
     let value = translations[currentLang];
     
     // Navigate through the translation object
@@ -126,6 +127,7 @@ function updateElementContent(element) {
         if (value && value[key] !== undefined) {
             value = value[key];
         } else {
+            console.warn(`🚫 Translation missing for ${translationKey} in ${currentLang}`);
             return;
         }
     }
@@ -134,17 +136,20 @@ function updateElementContent(element) {
     if (Array.isArray(value)) {
         // Handle arrays (like space features)
         element.innerHTML = value.map(item => `<p>${item}</p>`).join('');
+        console.log(`📝 Updated array content for ${translationKey}:`, value);
     } else {
+        const oldText = element.textContent;
         element.textContent = value;
+        console.log(`📝 Updated ${translationKey}: "${oldText}" → "${value}"`);
     }
 }
 
 // Switch language
-async function switchLanguage(lang, forceUpdate = false) {
-    console.log(`🔄 switchLanguage called: ${lang}, forceUpdate: ${forceUpdate}, currentLang: ${currentLang}`);
+async function switchLanguage(lang) {
+    console.log(`🔄 switchLanguage called: ${lang}, currentLang: ${currentLang}`);
     
-    if (currentLang === lang && !forceUpdate) {
-        console.log('⏭️ Skipping language switch - already active and no force update');
+    if (currentLang === lang) {
+        console.log('⏭️ Skipping language switch - already active');
         return;
     }
     
@@ -181,6 +186,8 @@ function getLanguageFromButton(buttonText) {
 
 // Initialize language switcher
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🌐 Language system initializing...');
+    
     // Load translations
     await initTranslations();
     
@@ -194,7 +201,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set initial language from localStorage or default to Spanish
     const savedLang = localStorage.getItem('preferredLanguage') || 'es';
     console.log('🔄 Initializing with language:', savedLang);
-    await switchLanguage(savedLang, true); // Force update on initial load
+    
+    // Force initial content update by temporarily setting currentLang to different value
+    const originalLang = currentLang;
+    currentLang = 'temp'; // Temporary value to force update
+    await switchLanguage(savedLang);
     
     // Add click handlers to language buttons
     const buttons = document.querySelectorAll('.language-selector button');
