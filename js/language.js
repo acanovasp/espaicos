@@ -140,8 +140,11 @@ function updateElementContent(element) {
 }
 
 // Switch language
-async function switchLanguage(lang) {
-    if (currentLang === lang) {
+async function switchLanguage(lang, forceUpdate = false) {
+    console.log(`🔄 switchLanguage called: ${lang}, forceUpdate: ${forceUpdate}, currentLang: ${currentLang}`);
+    
+    if (currentLang === lang && !forceUpdate) {
+        console.log('⏭️ Skipping language switch - already active and no force update');
         return;
     }
     
@@ -158,10 +161,12 @@ async function switchLanguage(lang) {
     });
     
     // Update text content with animation
+    console.log(`🔄 Updating content for language: ${lang}`);
     updateTextContent();
     
     // Save language preference
     localStorage.setItem('preferredLanguage', lang);
+    console.log(`✅ Language switched to: ${lang}`);
 }
 
 // Get language code from button text
@@ -179,9 +184,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load translations
     await initTranslations();
     
+    // Debug: Check if Spanish translations loaded correctly
+    console.log('🌐 Loaded translations:', Object.keys(translations));
+    console.log('🇪🇸 Spanish translations loaded:', !!translations.es && Object.keys(translations.es).length > 0);
+    if (translations.es) {
+        console.log('🇪🇸 Spanish translation keys:', Object.keys(translations.es));
+    }
+    
     // Set initial language from localStorage or default to Spanish
     const savedLang = localStorage.getItem('preferredLanguage') || 'es';
-    await switchLanguage(savedLang);
+    console.log('🔄 Initializing with language:', savedLang);
+    await switchLanguage(savedLang, true); // Force update on initial load
     
     // Add click handlers to language buttons
     const buttons = document.querySelectorAll('.language-selector button');
