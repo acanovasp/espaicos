@@ -361,15 +361,33 @@ li {
 .schedule-class {
     padding-bottom: var(--spacing-sm);
     border-bottom: 1.5px solid #82381A;
-    transition: all ease 0.2s;
+    transition: all ease 0.6s;
+    opacity: 0;
+    transform: translateX(-30px);
 }
 
 .top-padding {
     padding-top: var(--spacing-sm);
 }
 
-.schedule-class:hover {
+/* Animation states for scroll-triggered animations */
+.schedule-class.animate-in {
+    opacity: 1;
+    transform: translateX(0);
     padding-left: var(--spacing-sm);
+}
+
+/* Stagger delay for sequential animation */
+.schedule-class:nth-child(1) { transition-delay: 0ms; }
+.schedule-class:nth-child(2) { transition-delay: 150ms; }
+.schedule-class:nth-child(3) { transition-delay: 300ms; }
+.schedule-class:nth-child(4) { transition-delay: 450ms; }
+.schedule-class:nth-child(5) { transition-delay: 600ms; }
+.schedule-class:nth-child(6) { transition-delay: 750ms; }
+
+/* Keep hover effect for manual interaction */
+.schedule-class:hover {
+    padding-left: calc(var(--spacing-sm) * 1.5);
 }
 
 .space-section {

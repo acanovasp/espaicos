@@ -461,3 +461,61 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('🧭 Safari detected - using static SVG logo on desktop');
     }
 });
+
+// Scroll-triggered animations for schedule section
+document.addEventListener('DOMContentLoaded', function() {
+    const scheduleSection = document.querySelector('#schedule-section');
+    const scheduleClasses = document.querySelectorAll('.schedule-class');
+    
+    if (!scheduleSection || scheduleClasses.length === 0) {
+        return;
+    }
+    
+    console.log('🎬 Setting up scroll animations for', scheduleClasses.length, 'schedule items');
+    
+    // Create intersection observer for the schedule section
+    const observerOptions = {
+        root: null,
+        rootMargin: '-10% 0px -10% 0px', // Trigger when 10% of element is visible
+        threshold: 0.3 // Trigger when 30% of element is visible
+    };
+    
+    const scheduleObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                console.log('✨ Schedule section is visible - triggering animations');
+                
+                // Add animation class to all schedule items
+                scheduleClasses.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('animate-in');
+                        console.log(`🎯 Animating schedule item ${index + 1}`);
+                    }, index * 150); // Stagger animations by 150ms
+                });
+                
+                // Stop observing after animation triggers
+                scheduleObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    // Start observing the schedule section
+    scheduleObserver.observe(scheduleSection);
+    
+    // Optional: Reset animation if user scrolls back up (uncomment if desired)
+    /*
+    const resetObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting && entry.boundingClientRect.bottom < 0) {
+                // User scrolled past the section, reset for next time
+                scheduleClasses.forEach(item => {
+                    item.classList.remove('animate-in');
+                });
+                scheduleObserver.observe(scheduleSection);
+            }
+        });
+    }, { threshold: 0 });
+    
+    resetObserver.observe(scheduleSection);
+    */
+});
