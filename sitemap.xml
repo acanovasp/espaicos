@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://espaicos.com/</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://espaicos.com/" />
+    </url>
+    <url>
+        <loc>https://espaicos.com/#instructors-section</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/#instructors-section" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca#instructors-section" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en#instructors-section" />
+    </url>
+    <url>
+        <loc>https://espaicos.com/#classes-section</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/#classes-section" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca#classes-section" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en#classes-section" />
+    </url>
+    <url>
+        <loc>https://espaicos.com/#schedule-section</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/#schedule-section" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca#schedule-section" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en#schedule-section" />
+    </url>
+    <url>
+        <loc>https://espaicos.com/#space-section</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/#space-section" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca#space-section" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en#space-section" />
+    </url>
+    <url>
+        <loc>https://espaicos.com/#pricing-section</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/#pricing-section" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca#pricing-section" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en#pricing-section" />
+    </url>
+    <url>
+        <loc>https://espaicos.com/#form-section</loc>
+        <lastmod>2025-01-07</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="es" href="https://espaicos.com/#form-section" />
+        <xhtml:link rel="alternate" hreflang="ca" href="https://espaicos.com/?lang=ca#form-section" />
+        <xhtml:link rel="alternate" hreflang="en" href="https://espaicos.com/?lang=en#form-section" />
+    </url>
+</urlset>

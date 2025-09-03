@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://espaicos.com/sitemap.xml
+
+# Disallow crawling of API endpoints
+Disallow: /api/
+
+# Disallow crawling of node_modules (just in case)
+Disallow: /node_modules/
+
+# Allow crawling of assets
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Crawl-delay to be respectful to search engines
+Crawl-delay: 1
